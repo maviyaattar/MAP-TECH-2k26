@@ -400,12 +400,6 @@ window.addEventListener('scroll', function() {
     } else {
         scrollToTopBtn.classList.remove('show');
     }
-    
-    // Add parallax effect to header
-    const header = document.getElementById('header');
-    const scrolled = window.pageYOffset;
-    header.style.transform = `translateY(${scrolled * 0.5}px)`;
-    header.style.opacity = 1 - (scrolled / 500);
 });
 
 scrollToTopBtn.addEventListener('click', function() {
@@ -442,7 +436,7 @@ formInputs.forEach(input => {
 // Confetti Effect for Success
 // =====================================================
 function createConfetti() {
-    const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#ffd700'];
+    const colors = ['#2563eb', '#0891b2', '#0d9488', '#10b981', '#3b82f6'];
     const confettiCount = 50;
     
     for (let i = 0; i < confettiCount; i++) {

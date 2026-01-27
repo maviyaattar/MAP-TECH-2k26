@@ -1,6 +1,12 @@
 // =====================================================
 // Firebase Configuration
 // =====================================================
+// ⚠️ SECURITY WARNING:
+// 1. NEVER commit production Firebase credentials to version control
+// 2. Use environment variables or secure configuration management
+// 3. Set up proper security rules in Firebase Console
+// 4. Keep your API keys restricted in Firebase Console settings
+//
 // To use this application with your own Firebase project:
 // 1. Go to https://console.firebase.google.com/
 // 2. Create a new project or select an existing one

@@ -241,13 +241,10 @@ fileLabel.addEventListener('drop', function(e) {
 });
 
 // =====================================================
-// Form Validation & Submission
+// Form Validation & Submission with Firebase
 // =====================================================
-registrationForm.addEventListener('submit', function(e) {
+registrationForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
     
     // Validate all fields
     if (!validateForm()) {
@@ -259,9 +256,48 @@ registrationForm.addEventListener('submit', function(e) {
     submitBtn.classList.add('loading');
     submitBtn.disabled = true;
     
-    // Simulate form submission (Replace with actual API call)
-    setTimeout(() => {
-        console.log('Form Data:', Object.fromEntries(formData));
+    try {
+        // Check if Firebase is initialized
+        if (!window.db || !window.storage) {
+            throw new Error('Firebase is not configured. Please set up Firebase in firebase-config.js');
+        }
+        
+        // Get form data
+        const formData = {
+            instituteName: document.getElementById('instituteName').value,
+            participantName: document.getElementById('participantName').value,
+            department: document.getElementById('department').value,
+            eventSelection: document.getElementById('eventSelection').value,
+            whatsappNumber: document.getElementById('whatsappNumber').value,
+            email: document.getElementById('email').value,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending'
+        };
+        
+        // Upload payment screenshot to Firebase Storage
+        const fileInput = document.getElementById('paymentScreenshot');
+        const file = fileInput.files[0];
+        
+        if (file) {
+            // Generate unique filename
+            const timestamp = Date.now();
+            const filename = `payment-screenshots/${timestamp}_${file.name}`;
+            
+            // Upload to Firebase Storage
+            const storageRef = window.storage.ref(filename);
+            const uploadTask = await storageRef.put(file);
+            
+            // Get download URL
+            const downloadURL = await uploadTask.ref.getDownloadURL();
+            formData.paymentScreenshotURL = downloadURL;
+            formData.paymentScreenshotPath = filename;
+        }
+        
+        // Save to Firestore
+        const docRef = await window.db.collection('registrations').add(formData);
+        
+        console.log('✅ Registration successful! Document ID:', docRef.id);
+        console.log('📄 Form Data:', formData);
         
         // Hide form and show success message
         registrationForm.style.display = 'none';
@@ -276,7 +312,21 @@ registrationForm.addEventListener('submit', function(e) {
         
         // Add confetti effect
         createConfetti();
-    }, 2000);
+        
+        // Reset form
+        registrationForm.reset();
+        fileName.textContent = '';
+        
+    } catch (error) {
+        console.error('❌ Registration error:', error);
+        
+        // Show error message
+        alert(`Registration failed: ${error.message}\n\nPlease try again or contact support if the problem persists.`);
+        
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
 });
 
 function validateForm() {

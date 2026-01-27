@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Register for MAPTECH-2K26 - A premier college technical event">
-    <title>MAPTECH-2K26 | Registration</title>
+    <meta name="description" content="Register for MAP-TECH 2K26 - State Level Technical Event at Maulana Azad Polytechnic, Solapur">
+    <title>MAP-TECH 2K26 | State Level Technical Event</title>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,50 +18,42 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container">
-            <a href="#" class="navbar-brand">MAPTECH 2K26</a>
+            <a href="#" class="navbar-brand">MAP-TECH 2K26</a>
             <div class="navbar-links">
-                <a href="#header">Home</a>
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
                 <a href="#registration">Register</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <header class="header" id="header">
-        <div class="container">
-            <div class="logo-container">
-                <img src="logo.svg" alt="MAPTECH Logo" class="logo" id="logo">
-            </div>
-            <div class="event-info">
-                <h1 class="event-title">
-                    <span class="title-main">MAPTECH</span>
-                    <span class="title-year">2K26</span>
-                </h1>
-                <div class="event-details">
-                    <div class="detail-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>March 15-16, 2026</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Engineering Campus Auditorium</span>
-                    </div>
-                </div>
-                <p class="event-tagline">Innovate. Create. Inspire.</p>
-            </div>
-        </div>
-    </header>
-
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <h2 class="hero-title">Join the Future of Technology</h2>
-                <p class="hero-description">Register now for the most anticipated technical event of the year. Compete, collaborate, and showcase your skills!</p>
-                <a href="#registration" class="cta-button">
-                    <span>Register Now</span>
-                    <i class="fas fa-arrow-down"></i>
+                <div class="logo-container">
+                    <img src="logo.png" alt="MAP-TECH Logo" class="logo" id="logo">
+                </div>
+                <h1 class="hero-title">MAP-TECH 2K26</h1>
+                <p class="hero-subtitle">State Level Technical Event – Maulana Azad Polytechnic, Solapur</p>
+                <a href="#registration" class="scroll-down-btn">
+                    <i class="fas fa-chevron-down"></i>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Event Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About the Event</h2>
+                <p class="about-description">
+                    MAP-TECH 2K26 is a prestigious state-level technical event that brings together innovative minds from across the region. 
+                    This event is designed to foster innovation, showcase cutting-edge technical competitions, and provide a platform for 
+                    students to demonstrate their skills and knowledge. Join us in this celebration of technology, creativity, and academic excellence 
+                    at Maulana Azad Polytechnic, Solapur.
+                </p>
             </div>
         </div>
     </section>
@@ -74,38 +66,25 @@
                     <i class="fas fa-user-plus"></i>
                     Event Registration
                 </h2>
-                <p class="section-subtitle">Fill in your details to secure your spot at MAPTECH-2K26</p>
+                <p class="section-subtitle">Fill in your details to secure your spot at MAP-TECH 2K26</p>
             </div>
 
             <div class="form-wrapper">
                 <form id="registrationForm" class="registration-form">
+                    <!-- Participant Details -->
+                    <h3 class="form-section-title">Participant Details</h3>
+                    
                     <!-- Institute Name -->
                     <div class="form-group">
                         <label for="instituteName">
                             <i class="fas fa-university"></i>
-                            Institute Name
+                            Name of Institute
                         </label>
                         <input 
                             type="text" 
                             id="instituteName" 
                             name="instituteName" 
                             placeholder="Enter your institute name"
-                            required
-                        >
-                        <span class="form-hint">Start typing to search colleges</span>
-                    </div>
-
-                    <!-- Participant Name -->
-                    <div class="form-group">
-                        <label for="participantName">
-                            <i class="fas fa-user"></i>
-                            Participant Name
-                        </label>
-                        <input 
-                            type="text" 
-                            id="participantName" 
-                            name="participantName" 
-                            placeholder="Enter your full name"
                             required
                         >
                     </div>
@@ -125,23 +104,19 @@
                         >
                     </div>
 
-                    <!-- Event Selection -->
+                    <!-- Participant Name -->
                     <div class="form-group">
-                        <label for="eventSelection">
-                            <i class="fas fa-trophy"></i>
-                            Event Selection
+                        <label for="participantName">
+                            <i class="fas fa-user"></i>
+                            Participant's Full Name
                         </label>
-                        <select id="eventSelection" name="eventSelection" required>
-                            <option value="">Select an event</option>
-                            <option value="hackathon">24-Hour Hackathon</option>
-                            <option value="coding">Competitive Coding Challenge</option>
-                            <option value="robotics">Robotics Competition</option>
-                            <option value="iot">IoT Innovation Showcase</option>
-                            <option value="webdev">Web Development Contest</option>
-                            <option value="ai-ml">AI/ML Workshop & Competition</option>
-                            <option value="cybersec">Cybersecurity Challenge</option>
-                            <option value="tech-talk">Tech Talk Session</option>
-                        </select>
+                        <input 
+                            type="text" 
+                            id="participantName" 
+                            name="participantName" 
+                            placeholder="Enter your full name"
+                            required
+                        >
                     </div>
 
                     <!-- WhatsApp Number -->
@@ -164,7 +139,7 @@
                     <div class="form-group">
                         <label for="email">
                             <i class="fas fa-envelope"></i>
-                            Email Address
+                            Email
                         </label>
                         <input 
                             type="email" 
@@ -175,11 +150,38 @@
                         >
                     </div>
 
+                    <!-- Event Selection -->
+                    <div class="form-group">
+                        <label for="eventSelection">
+                            <i class="fas fa-trophy"></i>
+                            Event Selection
+                        </label>
+                        <select id="eventSelection" name="eventSelection" required>
+                            <option value="">Select an event</option>
+                            <option value="paper-presentation">Paper Presentation</option>
+                            <option value="poster-presentation">Poster Presentation</option>
+                            <option value="technical-quiz">Technical Quiz</option>
+                        </select>
+                    </div>
+
+                    <!-- Payment Section -->
+                    <h3 class="form-section-title">Payment Details</h3>
+                    
+                    <div class="payment-info">
+                        <div class="payment-qr">
+                            <img src="scanner.png" alt="Payment QR Code" class="qr-code">
+                            <p class="payment-fee">Registration Fee: ₹60 per participant</p>
+                            <a href="upi://pay?pa=meraj.pathan1@ibl&am=60&cu=INR&tn=MAPTECH2K26" class="upi-link">
+                                <i class="fas fa-mobile-alt"></i> Pay via UPI
+                            </a>
+                        </div>
+                    </div>
+
                     <!-- Payment Screenshot Upload -->
                     <div class="form-group file-upload-group">
                         <label for="paymentScreenshot">
                             <i class="fas fa-receipt"></i>
-                            Payment Screenshot
+                            Upload Payment Screenshot
                         </label>
                         <div class="file-upload-wrapper">
                             <input 
@@ -195,7 +197,7 @@
                                 <span class="file-name"></span>
                             </label>
                         </div>
-                        <span class="form-hint">Upload payment proof (JPG, PNG, PDF - Max 5MB)</span>
+                        <span class="form-hint">Upload payment proof (JPG, PNG - Max 5MB)</span>
                     </div>
 
                     <!-- Submit Button -->
@@ -203,6 +205,7 @@
                         <button type="submit" class="submit-button">
                             <span class="button-text">Complete Registration</span>
                             <i class="fas fa-paper-plane"></i>
+                            <span class="spinner"></span>
                         </button>
                     </div>
                 </form>
@@ -211,7 +214,7 @@
                 <div id="successMessage" class="success-message">
                     <i class="fas fa-check-circle"></i>
                     <h3>Registration Successful!</h3>
-                    <p>Thank you for registering. We'll send you a confirmation email shortly.</p>
+                    <p>Thank you for registering for MAP-TECH 2K26. We'll send you a confirmation email shortly.</p>
                 </div>
             </div>
         </div>
@@ -221,13 +224,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="branding">Branding by <span class="brand-name">Maviya</span></p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+                <p class="branding">Designed & Developed by <span class="brand-name">Maviya</span></p>
             </div>
         </div>
     </footer>
@@ -236,6 +233,11 @@
     <button id="scrollToTop" class="scroll-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
     <script src="script.js"></script>
 </body>

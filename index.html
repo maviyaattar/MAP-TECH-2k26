@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register for MAPTECH-2K26 - A premier college technical event">
+    <title>MAPTECH-2K26 | Registration</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Animation Elements -->
+    <div class="bg-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="logo.svg" alt="MAPTECH Logo" class="logo" id="logo">
+            </div>
+            <div class="event-info">
+                <h1 class="event-title">
+                    <span class="title-main">MAPTECH</span>
+                    <span class="title-year">2K26</span>
+                </h1>
+                <div class="event-details">
+                    <div class="detail-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>March 15-16, 2026</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Engineering Campus Auditorium</span>
+                    </div>
+                </div>
+                <p class="event-tagline">Innovate. Create. Inspire.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Join the Future of Technology</h2>
+                <p class="hero-description">Register now for the most anticipated technical event of the year. Compete, collaborate, and showcase your skills!</p>
+                <a href="#registration" class="cta-button smooth-scroll">
+                    <span>Register Now</span>
+                    <i class="fas fa-arrow-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form Section -->
+    <section class="registration-section" id="registration">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-user-plus"></i>
+                    Event Registration
+                </h2>
+                <p class="section-subtitle">Fill in your details to secure your spot at MAPTECH-2K26</p>
+            </div>
+
+            <div class="form-wrapper">
+                <form id="registrationForm" class="registration-form">
+                    <!-- Institute Name -->
+                    <div class="form-group">
+                        <label for="instituteName">
+                            <i class="fas fa-university"></i>
+                            Institute Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="instituteName" 
+                            name="instituteName" 
+                            placeholder="Enter your institute name"
+                            required
+                        >
+                        <span class="form-hint">Start typing to search colleges</span>
+                    </div>
+
+                    <!-- Participant Name -->
+                    <div class="form-group">
+                        <label for="participantName">
+                            <i class="fas fa-user"></i>
+                            Participant Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="participantName" 
+                            name="participantName" 
+                            placeholder="Enter your full name"
+                            required
+                        >
+                    </div>
+
+                    <!-- Department -->
+                    <div class="form-group">
+                        <label for="department">
+                            <i class="fas fa-building"></i>
+                            Department
+                        </label>
+                        <input 
+                            type="text" 
+                            id="department" 
+                            name="department" 
+                            placeholder="e.g., Computer Science, Mechanical"
+                            required
+                        >
+                    </div>
+
+                    <!-- Event Selection -->
+                    <div class="form-group">
+                        <label for="eventSelection">
+                            <i class="fas fa-trophy"></i>
+                            Event Selection
+                        </label>
+                        <select id="eventSelection" name="eventSelection" required>
+                            <option value="">Select an event</option>
+                            <option value="hackathon">24-Hour Hackathon</option>
+                            <option value="coding">Competitive Coding Challenge</option>
+                            <option value="robotics">Robotics Competition</option>
+                            <option value="iot">IoT Innovation Showcase</option>
+                            <option value="webdev">Web Development Contest</option>
+                            <option value="ai-ml">AI/ML Workshop & Competition</option>
+                            <option value="cybersec">Cybersecurity Challenge</option>
+                            <option value="tech-talk">Tech Talk Session</option>
+                        </select>
+                    </div>
+
+                    <!-- WhatsApp Number -->
+                    <div class="form-group">
+                        <label for="whatsappNumber">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp Number
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="whatsappNumber" 
+                            name="whatsappNumber" 
+                            placeholder="+91 XXXXX XXXXX"
+                            pattern="[0-9+\s-]+"
+                            required
+                        >
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="your.email@example.com"
+                            required
+                        >
+                    </div>
+
+                    <!-- Payment Screenshot Upload -->
+                    <div class="form-group file-upload-group">
+                        <label for="paymentScreenshot">
+                            <i class="fas fa-receipt"></i>
+                            Payment Screenshot
+                        </label>
+                        <div class="file-upload-wrapper">
+                            <input 
+                                type="file" 
+                                id="paymentScreenshot" 
+                                name="paymentScreenshot" 
+                                accept="image/*"
+                                required
+                            >
+                            <label for="paymentScreenshot" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="file-text">Choose file or drag here</span>
+                                <span class="file-name"></span>
+                            </label>
+                        </div>
+                        <span class="form-hint">Upload payment proof (JPG, PNG, PDF - Max 5MB)</span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">
+                            <span class="button-text">Complete Registration</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Registration Successful!</h3>
+                    <p>Thank you for registering. We'll send you a confirmation email shortly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="branding">Branding by <span class="brand-name">Maviya</span></p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

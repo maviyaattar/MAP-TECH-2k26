@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Register for MAPTECH-2K26 - A premier college technical event">
-    <title>MAPTECH-2K26 | Registration</title>
+    <meta name="description" content="Register for MAP-TECH 2K26 - State Level Technical Event at Maulana Azad Polytechnic, Solapur">
+    <title>MAP-TECH 2K26 | Registration</title>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,50 +18,54 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container">
-            <a href="#" class="navbar-brand">MAPTECH 2K26</a>
+            <a href="#" class="navbar-brand">MAP-TECH 2K26</a>
             <div class="navbar-links">
-                <a href="#header">Home</a>
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
                 <a href="#registration">Register</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <header class="header" id="header">
-        <div class="container">
-            <div class="logo-container">
-                <img src="logo.svg" alt="MAPTECH Logo" class="logo" id="logo">
-            </div>
-            <div class="event-info">
-                <h1 class="event-title">
-                    <span class="title-main">MAPTECH</span>
-                    <span class="title-year">2K26</span>
-                </h1>
-                <div class="event-details">
-                    <div class="detail-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>March 15-16, 2026</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Engineering Campus Auditorium</span>
-                    </div>
-                </div>
-                <p class="event-tagline">Innovate. Create. Inspire.</p>
-            </div>
-        </div>
-    </header>
-
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <h2 class="hero-title">Join the Future of Technology</h2>
-                <p class="hero-description">Register now for the most anticipated technical event of the year. Compete, collaborate, and showcase your skills!</p>
-                <a href="#registration" class="cta-button">
+                <div class="logo-container">
+                    <img src="logo.png" alt="MAP-TECH Logo" class="logo" id="logo">
+                </div>
+                <h1 class="hero-title">MAP-TECH 2K26</h1>
+                <p class="hero-subtitle">State Level Technical Event – Maulana Azad Polytechnic, Solapur</p>
+                <div class="event-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>10 February 2026</span>
+                </div>
+                <a href="#registration" class="scroll-button">
                     <span>Register Now</span>
                     <i class="fas fa-arrow-down"></i>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Event Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    About MAP-TECH 2K26
+                </h2>
+            </div>
+            <div class="about-content">
+                <p>MAP-TECH 2K26 is a prestigious state-level technical event organized by Maulana Azad Polytechnic, Solapur. This event brings together bright minds from across the state to showcase their technical prowess, innovative ideas, and problem-solving capabilities.</p>
+                <p>Our event features three exciting categories designed to challenge and inspire participants:</p>
+                <ul class="event-features">
+                    <li><i class="fas fa-file-alt"></i> <strong>Paper Presentation:</strong> Share your research and innovative solutions to real-world technical problems</li>
+                    <li><i class="fas fa-image"></i> <strong>Poster Presentation:</strong> Visually communicate your technical concepts and innovations</li>
+                    <li><i class="fas fa-brain"></i> <strong>Technical Quiz:</strong> Test your technical knowledge and compete with the best minds</li>
+                </ul>
+                <p>Join us in this celebration of technical excellence and innovation. Network with peers, learn from experts, and showcase your skills on a state-level platform.</p>
             </div>
         </div>
     </section>
@@ -74,144 +78,184 @@
                     <i class="fas fa-user-plus"></i>
                     Event Registration
                 </h2>
-                <p class="section-subtitle">Fill in your details to secure your spot at MAPTECH-2K26</p>
+                <p class="section-subtitle">Fill in your details to secure your spot at MAP-TECH 2K26</p>
+                <p class="registration-fee">Registration Fee: <span class="fee-amount">₹60</span> per participant</p>
             </div>
 
-            <div class="form-wrapper">
-                <form id="registrationForm" class="registration-form">
-                    <!-- Institute Name -->
-                    <div class="form-group">
-                        <label for="instituteName">
-                            <i class="fas fa-university"></i>
-                            Institute Name
-                        </label>
-                        <input 
-                            type="text" 
-                            id="instituteName" 
-                            name="instituteName" 
-                            placeholder="Enter your institute name"
-                            required
-                        >
-                        <span class="form-hint">Start typing to search colleges</span>
+            <div class="registration-container">
+                <!-- Payment Instructions -->
+                <div class="payment-instructions">
+                    <h3><i class="fas fa-money-bill-wave"></i> Payment Details</h3>
+                    <div class="payment-content">
+                        <div class="qr-section">
+                            <img src="scanner.png" alt="UPI QR Code" class="qr-code">
+                            <p class="qr-label">Scan to Pay</p>
+                        </div>
+                        <div class="upi-details">
+                            <div class="upi-info">
+                                <p><strong>UPI ID:</strong></p>
+                                <p class="upi-id">meraj.pathan1@ibl</p>
+                            </div>
+                            <div class="upi-info">
+                                <p><strong>Name:</strong></p>
+                                <p>MERAJ USMAN PATHAN</p>
+                            </div>
+                            <div class="upi-info">
+                                <p><strong>Amount:</strong></p>
+                                <p class="amount">₹60</p>
+                            </div>
+                            <a href="upi://pay?pa=meraj.pathan1@ibl&pn=MERAJ%20USMAN%20PATHAN&am=60&cu=INR&tn=MAPTECH2K26" class="upi-pay-button">
+                                <i class="fas fa-mobile-alt"></i>
+                                Pay via UPI
+                            </a>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Participant Name -->
-                    <div class="form-group">
-                        <label for="participantName">
-                            <i class="fas fa-user"></i>
-                            Participant Name
-                        </label>
-                        <input 
-                            type="text" 
-                            id="participantName" 
-                            name="participantName" 
-                            placeholder="Enter your full name"
-                            required
-                        >
-                    </div>
-
-                    <!-- Department -->
-                    <div class="form-group">
-                        <label for="department">
-                            <i class="fas fa-building"></i>
-                            Department
-                        </label>
-                        <input 
-                            type="text" 
-                            id="department" 
-                            name="department" 
-                            placeholder="e.g., Computer Science, Mechanical"
-                            required
-                        >
-                    </div>
-
-                    <!-- Event Selection -->
-                    <div class="form-group">
-                        <label for="eventSelection">
-                            <i class="fas fa-trophy"></i>
-                            Event Selection
-                        </label>
-                        <select id="eventSelection" name="eventSelection" required>
-                            <option value="">Select an event</option>
-                            <option value="hackathon">24-Hour Hackathon</option>
-                            <option value="coding">Competitive Coding Challenge</option>
-                            <option value="robotics">Robotics Competition</option>
-                            <option value="iot">IoT Innovation Showcase</option>
-                            <option value="webdev">Web Development Contest</option>
-                            <option value="ai-ml">AI/ML Workshop & Competition</option>
-                            <option value="cybersec">Cybersecurity Challenge</option>
-                            <option value="tech-talk">Tech Talk Session</option>
-                        </select>
-                    </div>
-
-                    <!-- WhatsApp Number -->
-                    <div class="form-group">
-                        <label for="whatsappNumber">
-                            <i class="fab fa-whatsapp"></i>
-                            WhatsApp Number
-                        </label>
-                        <input 
-                            type="tel" 
-                            id="whatsappNumber" 
-                            name="whatsappNumber" 
-                            placeholder="+91 XXXXX XXXXX"
-                            pattern="[0-9+\s-]+"
-                            required
-                        >
-                    </div>
-
-                    <!-- Email Address -->
-                    <div class="form-group">
-                        <label for="email">
-                            <i class="fas fa-envelope"></i>
-                            Email Address
-                        </label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="your.email@example.com"
-                            required
-                        >
-                    </div>
-
-                    <!-- Payment Screenshot Upload -->
-                    <div class="form-group file-upload-group">
-                        <label for="paymentScreenshot">
-                            <i class="fas fa-receipt"></i>
-                            Payment Screenshot
-                        </label>
-                        <div class="file-upload-wrapper">
+                <!-- Registration Form -->
+                <div class="form-wrapper">
+                    <form id="registrationForm" class="registration-form">
+                        <!-- Institute Name -->
+                        <div class="form-group">
+                            <label for="instituteName">
+                                <i class="fas fa-university"></i>
+                                Name of Institute
+                            </label>
                             <input 
-                                type="file" 
-                                id="paymentScreenshot" 
-                                name="paymentScreenshot" 
-                                accept="image/*"
+                                type="text" 
+                                id="instituteName" 
+                                name="instituteName" 
+                                placeholder="Enter your institute name"
                                 required
                             >
-                            <label for="paymentScreenshot" class="file-upload-label">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <span class="file-text">Choose file or drag here</span>
-                                <span class="file-name"></span>
-                            </label>
                         </div>
-                        <span class="form-hint">Upload payment proof (JPG, PNG, PDF - Max 5MB)</span>
-                    </div>
 
-                    <!-- Submit Button -->
-                    <div class="form-actions">
-                        <button type="submit" class="submit-button">
-                            <span class="button-text">Complete Registration</span>
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </form>
+                        <!-- Department/Group -->
+                        <div class="form-group">
+                            <label for="department">
+                                <i class="fas fa-building"></i>
+                                Department/Group
+                            </label>
+                            <select id="department" name="department" required>
+                                <option value="">Select Department</option>
+                                <option value="Computer Engineering">Computer Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
 
-                <!-- Success Message -->
-                <div id="successMessage" class="success-message">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Registration Successful!</h3>
-                    <p>Thank you for registering. We'll send you a confirmation email shortly.</p>
+                        <!-- Participant Name -->
+                        <div class="form-group">
+                            <label for="participantName">
+                                <i class="fas fa-user"></i>
+                                Participant Full Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="participantName" 
+                                name="participantName" 
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+                        <!-- WhatsApp Number -->
+                        <div class="form-group">
+                            <label for="whatsappNumber">
+                                <i class="fab fa-whatsapp"></i>
+                                WhatsApp Number
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="whatsappNumber" 
+                                name="whatsappNumber" 
+                                placeholder="+91 XXXXX XXXXX"
+                                pattern="[0-9+\s-]+"
+                                required
+                            >
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email ID
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                placeholder="your.email@example.com"
+                                required
+                            >
+                        </div>
+
+                        <!-- Event Selection (Checkboxes) -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-trophy"></i>
+                                Event Selection
+                            </label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="events" value="Paper Presentation">
+                                    <span class="checkbox-custom"></span>
+                                    <span>Paper Presentation</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="events" value="Poster Presentation">
+                                    <span class="checkbox-custom"></span>
+                                    <span>Poster Presentation</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="events" value="Technical Quiz">
+                                    <span class="checkbox-custom"></span>
+                                    <span>Technical Quiz</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Payment Screenshot Upload -->
+                        <div class="form-group file-upload-group">
+                            <label for="paymentScreenshot">
+                                <i class="fas fa-receipt"></i>
+                                Upload Payment Screenshot
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input 
+                                    type="file" 
+                                    id="paymentScreenshot" 
+                                    name="paymentScreenshot" 
+                                    accept="image/*"
+                                    required
+                                >
+                                <label for="paymentScreenshot" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span class="file-text">Choose file or drag here</span>
+                                    <span class="file-name"></span>
+                                </label>
+                            </div>
+                            <span class="form-hint">Upload payment proof (JPG, PNG - Max 5MB)</span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <button type="submit" class="submit-button">
+                                <span class="button-text">Complete Registration</span>
+                                <span class="loading-spinner"></span>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Registration Successful!</h3>
+                        <p>Thank you for registering. We'll send you a confirmation shortly.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -221,13 +265,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="branding">Branding by <span class="brand-name">Maviya</span></p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+                <p class="credit">Designed & Developed by <span class="brand-name">Maviya</span></p>
             </div>
         </div>
     </footer>
@@ -237,6 +275,7 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="script.js"></script>
+    <!-- Firebase and Form Script -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>

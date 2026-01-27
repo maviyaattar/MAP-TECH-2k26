@@ -362,18 +362,6 @@ function isValidPhone(phone) {
     return phoneRegex.test(phone);
 }
 
-// Add shake animation
-const shakeKeyframes = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-10px); }
-        75% { transform: translateX(10px); }
-    }
-`;
-const styleSheet = document.createElement('style');
-styleSheet.textContent = shakeKeyframes;
-document.head.appendChild(styleSheet);
-
 // =====================================================
 // Smooth Scrolling
 // =====================================================

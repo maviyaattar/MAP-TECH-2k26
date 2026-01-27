@@ -241,13 +241,10 @@ fileLabel.addEventListener('drop', function(e) {
 });
 
 // =====================================================
-// Form Validation & Submission
+// Form Validation & Submission with Firebase
 // =====================================================
-registrationForm.addEventListener('submit', function(e) {
+registrationForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
     
     // Validate all fields
     if (!validateForm()) {
@@ -259,9 +256,54 @@ registrationForm.addEventListener('submit', function(e) {
     submitBtn.classList.add('loading');
     submitBtn.disabled = true;
     
-    // Simulate form submission (Replace with actual API call)
-    setTimeout(() => {
-        console.log('Form Data:', Object.fromEntries(formData));
+    try {
+        // Check if Firebase is initialized
+        if (!window.db) {
+            throw new Error('Firebase Firestore is not configured. Please set up Firebase in firebase-config.js');
+        }
+        if (!window.storage) {
+            throw new Error('Firebase Storage is not configured. Please set up Firebase in firebase-config.js');
+        }
+        
+        // Get form data
+        const formData = {
+            instituteName: document.getElementById('instituteName').value,
+            participantName: document.getElementById('participantName').value,
+            department: document.getElementById('department').value,
+            eventSelection: document.getElementById('eventSelection').value,
+            whatsappNumber: document.getElementById('whatsappNumber').value,
+            email: document.getElementById('email').value,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending'
+        };
+        
+        // Upload payment screenshot to Firebase Storage
+        const fileInput = document.getElementById('paymentScreenshot');
+        const file = fileInput.files[0];
+        
+        if (file) {
+            // Sanitize filename to prevent security issues
+            const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            
+            // Generate unique filename with timestamp
+            const timestamp = Date.now();
+            const filename = `payment-screenshots/${timestamp}_${sanitizedFileName}`;
+            
+            // Upload to Firebase Storage
+            const storageRef = window.storage.ref(filename);
+            const uploadTask = await storageRef.put(file);
+            
+            // Get download URL
+            const downloadURL = await uploadTask.ref.getDownloadURL();
+            formData.paymentScreenshotURL = downloadURL;
+            formData.paymentScreenshotPath = filename;
+        }
+        
+        // Save to Firestore
+        const docRef = await window.db.collection('registrations').add(formData);
+        
+        console.log('✅ Registration successful! Document ID:', docRef.id);
+        console.log('📄 Form Data:', formData);
         
         // Hide form and show success message
         registrationForm.style.display = 'none';
@@ -276,8 +318,86 @@ registrationForm.addEventListener('submit', function(e) {
         
         // Add confetti effect
         createConfetti();
-    }, 2000);
+        
+        // Reset form
+        registrationForm.reset();
+        fileName.textContent = '';
+        
+    } catch (error) {
+        console.error('❌ Registration error:', error);
+        
+        // Show error message in a user-friendly way
+        showRegistrationError(error.message);
+        
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
 });
+
+function showRegistrationError(message) {
+    // Remove existing error if any
+    const existingError = document.querySelector('.registration-error');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Create error message element
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'registration-error';
+    errorDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fef2f2;
+        color: #ef4444;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        max-width: 90%;
+        border: 2px solid #ef4444;
+        animation: slideDown 0.3s ease;
+    `;
+    errorDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-exclamation-circle" style="font-size: 1.5rem;"></i>
+            <div>
+                <strong>Registration Failed</strong>
+                <p style="margin: 4px 0 0 0; font-size: 0.9rem;">${message}</p>
+            </div>
+        </div>
+    `;
+    
+    // Add animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(errorDiv);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        errorDiv.style.animation = 'slideDown 0.3s ease reverse';
+        setTimeout(() => {
+            errorDiv.remove();
+            style.remove();
+        }, 300);
+    }, 5000);
+}
+
 
 function validateForm() {
     let isValid = true;

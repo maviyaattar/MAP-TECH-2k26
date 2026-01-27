@@ -1,4 +1,27 @@
 // =====================================================
+// Firebase Configuration
+// =====================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyAjDdnn_0_K0iQkSCLd5RcgMrP-DOjrzzU",
+    authDomain: "map-tech2k26.firebaseapp.com",
+    projectId: "map-tech2k26",
+    storageBucket: "map-tech2k26.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef123456"
+};
+
+// Initialize Firebase
+let db, storage;
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    storage = firebase.storage();
+    console.log('Firebase initialized successfully');
+} catch (error) {
+    console.error('Firebase initialization error:', error);
+}
+
+// =====================================================
 // DOM Elements
 // =====================================================
 const registrationForm = document.getElementById('registrationForm');
@@ -7,145 +30,14 @@ const scrollToTopBtn = document.getElementById('scrollToTop');
 const fileInput = document.getElementById('paymentScreenshot');
 const fileLabel = document.querySelector('.file-upload-label');
 const fileName = document.querySelector('.file-name');
-const instituteInput = document.getElementById('instituteName');
 const logo = document.getElementById('logo');
-
-// =====================================================
-// College/Institute Data (Mock API)
-// =====================================================
-const collegeDatabase = [
-    'MIT - Massachusetts Institute of Technology',
-    'Stanford University',
-    'IIT Bombay - Indian Institute of Technology',
-    'IIT Delhi - Indian Institute of Technology',
-    'IIT Madras - Indian Institute of Technology',
-    'NIT Trichy - National Institute of Technology',
-    'BITS Pilani - Birla Institute of Technology',
-    'VIT Vellore - Vellore Institute of Technology',
-    'Anna University',
-    'Delhi Technological University',
-    'PSG College of Technology',
-    'College of Engineering, Pune',
-    'Jadavpur University',
-    'SRM Institute of Science and Technology',
-    'Manipal Institute of Technology',
-    'Amity University',
-    'Lovely Professional University',
-    'Thapar Institute of Engineering',
-    'PES University',
-    'RV College of Engineering'
-];
 
 // =====================================================
 // Logo Fallback
 // =====================================================
 logo.addEventListener('error', function() {
-    // Create a placeholder SVG logo if logo.png is not found
-    this.style.display = 'none';
-    const placeholderDiv = document.createElement('div');
-    placeholderDiv.style.cssText = `
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        font-weight: bold;
-        color: white;
-        margin: 0 auto 30px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    `;
-    placeholderDiv.textContent = 'MT';
-    this.parentElement.appendChild(placeholderDiv);
-});
-
-// =====================================================
-// Auto-fetch College Details (Mock API Implementation)
-// =====================================================
-let collegeTimeout;
-instituteInput.addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase();
-    
-    // Clear previous timeout
-    clearTimeout(collegeTimeout);
-    
-    // Remove existing suggestions
-    const existingSuggestions = document.querySelector('.college-suggestions');
-    if (existingSuggestions) {
-        existingSuggestions.remove();
-    }
-    
-    if (searchTerm.length < 2) return;
-    
-    // Simulate API call with timeout
-    collegeTimeout = setTimeout(() => {
-        const matches = collegeDatabase.filter(college => 
-            college.toLowerCase().includes(searchTerm)
-        ).slice(0, 5);
-        
-        if (matches.length > 0) {
-            createSuggestionBox(matches);
-        }
-    }, 300);
-});
-
-function createSuggestionBox(suggestions) {
-    const suggestionBox = document.createElement('div');
-    suggestionBox.className = 'college-suggestions';
-    suggestionBox.style.cssText = `
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        margin-top: 5px;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-    `;
-    
-    suggestions.forEach(college => {
-        const item = document.createElement('div');
-        item.className = 'suggestion-item';
-        item.textContent = college;
-        item.style.cssText = `
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            border-bottom: 1px solid #f1f5f9;
-        `;
-        
-        item.addEventListener('mouseenter', () => {
-            item.style.background = '#f8fafc';
-        });
-        
-        item.addEventListener('mouseleave', () => {
-            item.style.background = 'white';
-        });
-        
-        item.addEventListener('click', () => {
-            instituteInput.value = college;
-            suggestionBox.remove();
-        });
-        
-        suggestionBox.appendChild(item);
-    });
-    
-    const formGroup = instituteInput.closest('.form-group');
-    formGroup.style.position = 'relative';
-    formGroup.appendChild(suggestionBox);
-}
-
-// Close suggestions when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.form-group')) {
-        const suggestions = document.querySelector('.college-suggestions');
-        if (suggestions) suggestions.remove();
-    }
+    // If logo.png is not found, show a placeholder
+    console.log('Logo image not found, using placeholder');
 });
 
 // =====================================================
@@ -241,13 +133,10 @@ fileLabel.addEventListener('drop', function(e) {
 });
 
 // =====================================================
-// Form Validation & Submission
+// Form Validation & Submission with Firebase
 // =====================================================
-registrationForm.addEventListener('submit', function(e) {
+registrationForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
     
     // Validate all fields
     if (!validateForm()) {
@@ -259,24 +148,59 @@ registrationForm.addEventListener('submit', function(e) {
     submitBtn.classList.add('loading');
     submitBtn.disabled = true;
     
-    // Simulate form submission (Replace with actual API call)
-    setTimeout(() => {
-        console.log('Form Data:', Object.fromEntries(formData));
+    try {
+        // Get form data
+        const formData = {
+            instituteName: document.getElementById('instituteName').value,
+            department: document.getElementById('department').value,
+            participantName: document.getElementById('participantName').value,
+            whatsappNumber: document.getElementById('whatsappNumber').value,
+            email: document.getElementById('email').value,
+            eventSelection: document.getElementById('eventSelection').value,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        // Upload payment screenshot first
+        const fileInput = document.getElementById('paymentScreenshot');
+        const file = fileInput.files[0];
+        
+        if (file) {
+            const storageRef = storage.ref();
+            const fileName = `${Date.now()}_${file.name}`;
+            const fileRef = storageRef.child(`payments/${fileName}`);
+            
+            // Upload file
+            await fileRef.put(file);
+            
+            // Get download URL
+            const downloadURL = await fileRef.getDownloadURL();
+            formData.paymentScreenshot = downloadURL;
+            formData.paymentFileName = fileName;
+        }
+        
+        // Store in Firestore
+        await db.collection('registrations').add(formData);
+        
+        console.log('Registration successful:', formData);
         
         // Hide form and show success message
         registrationForm.style.display = 'none';
         successMessage.classList.add('show');
-        
-        // Reset button state
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
         
         // Smooth scroll to success message
         successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         // Add confetti effect
         createConfetti();
-    }, 2000);
+        
+    } catch (error) {
+        console.error('Registration error:', error);
+        alert('Registration failed. Please try again or contact support.');
+        
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
 });
 
 function validateForm() {
@@ -518,9 +442,9 @@ if (window.history.replaceState) {
 // =====================================================
 // Console Welcome Message
 // =====================================================
-console.log('%c🚀 Welcome to MAPTECH-2K26!', 'font-size: 20px; font-weight: bold; color: #667eea;');
-console.log('%c✨ Innovate. Create. Inspire.', 'font-size: 14px; color: #764ba2;');
-console.log('%c💡 Built with modern web technologies', 'font-size: 12px; color: #64748b;');
+console.log('%c🚀 Welcome to MAP-TECH 2K26!', 'font-size: 20px; font-weight: bold; color: #60A5FA;');
+console.log('%c✨ State Level Technical Event', 'font-size: 14px; color: #3B82F6;');
+console.log('%c💡 Maulana Azad Polytechnic, Solapur', 'font-size: 12px; color: #64748b;');
 
 // =====================================================
 // Accessibility Enhancements
@@ -539,11 +463,20 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 't' || e.key === 'T') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    
+    // Press 'A' to scroll to about
+    if (e.key === 'a' || e.key === 'A') {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
 });
 
 // Announce keyboard shortcuts on page load
 setTimeout(() => {
     console.log('%c⌨️ Keyboard Shortcuts:', 'font-weight: bold;');
     console.log('  • Press "R" to jump to registration');
+    console.log('  • Press "A" to jump to about section');
     console.log('  • Press "T" to scroll to top');
 }, 1000);

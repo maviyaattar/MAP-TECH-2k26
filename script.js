@@ -157,7 +157,7 @@ fileInput.addEventListener('change', function(e) {
     if (file) {
         // Validate file size (5MB max)
         if (file.size > 5 * 1024 * 1024) {
-            alert('File size should not exceed 5MB');
+            showFileError('File size should not exceed 5MB');
             fileInput.value = '';
             return;
         }
@@ -165,10 +165,13 @@ fileInput.addEventListener('change', function(e) {
         // Validate file type
         const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
         if (!validTypes.includes(file.type)) {
-            alert('Please upload a valid image (JPG, PNG) or PDF file');
+            showFileError('Please upload a valid image (JPG, PNG) or PDF file');
             fileInput.value = '';
             return;
         }
+        
+        // Clear any error messages
+        clearFileError();
         
         // Display file name
         fileName.textContent = `Selected: ${file.name}`;
@@ -181,6 +184,36 @@ fileInput.addEventListener('change', function(e) {
         icon.style.color = '#10b981';
     }
 });
+
+function showFileError(message) {
+    clearFileError();
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'file-error-message';
+    errorDiv.style.cssText = `
+        color: #ef4444;
+        font-size: 0.85rem;
+        margin-top: 8px;
+        padding: 10px;
+        background: #fef2f2;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        animation: shake 0.5s;
+    `;
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    
+    const fileGroup = document.querySelector('.file-upload-group');
+    fileGroup.appendChild(errorDiv);
+}
+
+function clearFileError() {
+    const existingError = document.querySelector('.file-error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+}
 
 // Drag and Drop for File Upload
 fileLabel.addEventListener('dragover', function(e) {
@@ -414,38 +447,50 @@ function createConfetti() {
     
     for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
+        const animationDuration = 2 + Math.random() * 2;
+        const leftPosition = Math.random() * 100;
+        const rotation = Math.random() * 360;
+        const finalRotation = 360 + Math.random() * 360;
+        const translateX = -50 + Math.random() * 100;
+        
         confetti.style.cssText = `
             position: fixed;
             width: 10px;
             height: 10px;
             background: ${colors[Math.floor(Math.random() * colors.length)]};
             top: -10px;
-            left: ${Math.random() * 100}%;
+            left: ${leftPosition}%;
             opacity: 1;
-            transform: rotate(${Math.random() * 360}deg);
-            animation: confettiFall ${2 + Math.random() * 2}s linear forwards;
+            transform: rotate(${rotation}deg);
             z-index: 10000;
             pointer-events: none;
         `;
+        
+        // Create individual animation for each confetti
+        const keyframeName = `confettiFall${i}`;
+        const keyframes = `
+            @keyframes ${keyframeName} {
+                to {
+                    top: 100vh;
+                    opacity: 0;
+                    transform: rotate(${finalRotation}deg) translateX(${translateX}px);
+                }
+            }
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        confetti.style.animation = `${keyframeName} ${animationDuration}s linear forwards`;
         document.body.appendChild(confetti);
         
-        setTimeout(() => confetti.remove(), 4000);
+        setTimeout(() => {
+            confetti.remove();
+            style.remove();
+        }, 4000);
     }
 }
-
-// Add confetti animation
-const confettiKeyframes = `
-    @keyframes confettiFall {
-        to {
-            top: 100vh;
-            opacity: 0;
-            transform: rotate(${360 + Math.random() * 360}deg) translateX(${-50 + Math.random() * 100}px);
-        }
-    }
-`;
-const confettiStyle = document.createElement('style');
-confettiStyle.textContent = confettiKeyframes;
-document.head.appendChild(confettiStyle);
 
 // =====================================================
 // Page Load Animation

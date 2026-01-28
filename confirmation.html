@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Confirmation - MAP-TECH 2K26</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary-color: #0D47A1;
+  --secondary-color: #1976D2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  padding: 40px 30px;
+  text-align: center;
+  color: white;
+}
+
+.header img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 4px solid white;
+}
+
+.header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.content {
+  padding: 40px 30px;
+}
+
+.confirmation-id {
+  background: #e8f5e9;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 30px;
+  border-left: 4px solid #4CAF50;
+}
+
+.confirmation-id h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.confirmation-id .id-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2e7d32;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  color: var(--primary-color);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title i {
+  font-size: 24px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.info-item {
+  background: #f5f8ff;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 3px solid var(--secondary-color);
+}
+
+.info-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #666;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.event-details {
+  background: #fff3e0;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #ff9800;
+}
+
+.event-details h4 {
+  color: #e65100;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.event-details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.event-details li {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.event-details li i {
+  color: #ff9800;
+  width: 20px;
+}
+
+.important-notes {
+  background: #fff3cd;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #ffc107;
+  margin-top: 20px;
+}
+
+.important-notes h4 {
+  color: #856404;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.important-notes ul {
+  list-style: none;
+  padding: 0;
+}
+
+.important-notes li {
+  padding: 5px 0;
+  color: #856404;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.important-notes li:before {
+  content: "•";
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--secondary-color), #42A5F5);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.footer {
+  background: #f5f5f5;
+  padding: 20px 30px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+  height: 20px;
+  margin: 10px 0;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  
+  .action-buttons, .btn {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 30px 20px;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+  }
+  
+  .content {
+    padding: 30px 20px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">
+    <img src="logo.jpg" alt="MAP-TECH 2K26 Logo">
+    <h1>MAP-TECH 2K26</h1>
+    <p>Registration Confirmation</p>
+  </div>
+  
+  <div class="content">
+    <div class="confirmation-id">
+      <h3><i class="fas fa-ticket-alt"></i> Confirmation ID</h3>
+      <div class="id-value" id="confirmationId">Loading...</div>
+    </div>
+    
+    <div class="section">
+      <h3 class="section-title">
+        <i class="fas fa-user"></i>
+        Participant Information
+      </h3>
+      <div class="info-grid" id="participantInfo">
+        <!-- Will be loaded by JavaScript -->
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="event-details">
+        <h4><i class="fas fa-calendar-alt"></i> Event Details</h4>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> <strong>Venue:</strong> To be announced</li>
+          <li><i class="fas fa-clock"></i> <strong>Date:</strong> February 2026</li>
+          <li><i class="fas fa-rupee-sign"></i> <strong>Registration Fee:</strong> ₹60</li>
+          <li><i class="fas fa-check-circle"></i> <strong>Status:</strong> Payment Verified</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="important-notes">
+        <h4><i class="fas fa-exclamation-triangle"></i> Important Instructions</h4>
+        <ul>
+          <li>Please bring a printed copy of this confirmation or show it on your mobile device</li>
+          <li>Arrive at the venue 30 minutes before the event starts</li>
+          <li>Carry a valid ID card from your institute</li>
+          <li>For any queries, contact us via WhatsApp or email</li>
+          <li>Check your email regularly for event updates</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="window.print()">
+        <i class="fas fa-print"></i>
+        Print Confirmation
+      </button>
+      <button class="btn btn-secondary" onclick="downloadPDF()">
+        <i class="fas fa-download"></i>
+        Download PDF
+      </button>
+      <a href="index.html" class="btn btn-secondary">
+        <i class="fas fa-home"></i>
+        Back to Home
+      </a>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>&copy; 2026 MAP-TECH. All rights reserved.</p>
+    <p>Contact: meraj.pathan1@ibl | WhatsApp: Contact via registration details</p>
+  </div>
+</div>
+
+<script>
+// Generate a confirmation ID
+function generateConfirmationId() {
+  const prefix = 'MT2K26';
+  const random = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  return `${prefix}-${random}`;
+}
+
+// Load registration data
+window.addEventListener('load', () => {
+  const data = sessionStorage.getItem('registrationData');
+  const participantInfo = document.getElementById('participantInfo');
+  const confirmationId = document.getElementById('confirmationId');
+  
+  // Generate and display confirmation ID
+  const id = generateConfirmationId();
+  confirmationId.textContent = id;
+  
+  if (data) {
+    const regData = JSON.parse(data);
+    participantInfo.innerHTML = `
+      <div class="info-item">
+        <div class="info-label">Full Name</div>
+        <div class="info-value">${regData.name}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Institute</div>
+        <div class="info-value">${regData.institute}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Department</div>
+        <div class="info-value">${regData.dept}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">WhatsApp Number</div>
+        <div class="info-value">${regData.phone}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Email Address</div>
+        <div class="info-value">${regData.email}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Registration Date</div>
+        <div class="info-value">${new Date().toLocaleDateString()}</div>
+      </div>
+    `;
+  } else {
+    participantInfo.innerHTML = `
+      <p style="grid-column: 1/-1; text-align: center; color: #666; padding: 20px;">
+        Registration details not found. Please complete the registration process first.
+      </p>
+    `;
+  }
+});
+
+// Download PDF function (placeholder)
+function downloadPDF() {
+  alert('PDF download functionality will be available soon. For now, please use the Print option and save as PDF.');
+}
+</script>
+
+</body>
+</html>

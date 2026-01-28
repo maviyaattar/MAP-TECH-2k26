@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You - MAP-TECH 2K26</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary-color: #0D47A1;
+  --secondary-color: #1976D2;
+  --success-color: #4CAF50;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 600px;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--success-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 25px;
+  animation: scaleIn 0.5s ease-out 0.3s both;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.success-icon i {
+  font-size: 40px;
+  color: white;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  animation: fadeIn 0.6s ease-out 0.4s both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+  animation: fadeIn 0.6s ease-out 0.5s both;
+}
+
+.details {
+  background: #f5f8ff;
+  padding: 25px;
+  border-radius: 12px;
+  margin: 25px 0;
+  text-align: left;
+  animation: fadeIn 0.6s ease-out 0.6s both;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.detail-value {
+  color: #333;
+}
+
+.message-box {
+  background: #e8f5e9;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 25px 0;
+  border-left: 4px solid var(--success-color);
+  animation: fadeIn 0.6s ease-out 0.7s both;
+}
+
+.message-box i {
+  color: var(--success-color);
+  margin-right: 10px;
+}
+
+.message-box p {
+  color: #2e7d32;
+  line-height: 1.6;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  animation: fadeIn 0.6s ease-out 0.8s both;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 150px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--secondary-color), #42A5F5);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 2px solid #e0e0e0;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #ffd700;
+  position: absolute;
+  animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 25px;
+  }
+  
+  h1 {
+    font-size: 28px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="success-icon">
+    <i class="fas fa-check"></i>
+  </div>
+  
+  <h1>Thank You!</h1>
+  <p class="subtitle">Your registration has been submitted successfully</p>
+  
+  <div class="details" id="detailsSection">
+    <!-- Registration details will be loaded here -->
+  </div>
+  
+  <div class="message-box">
+    <p>
+      <i class="fas fa-info-circle"></i>
+      Your registration is being processed. You will receive a confirmation email shortly with further details about the event.
+    </p>
+  </div>
+  
+  <div class="button-group">
+    <a href="confirmation.html" class="btn btn-primary">
+      <i class="fas fa-file-alt"></i> View Confirmation
+    </a>
+    <a href="index.html" class="btn btn-secondary">
+      <i class="fas fa-home"></i> Back to Home
+    </a>
+  </div>
+</div>
+
+<script>
+// Create confetti effect
+function createConfetti() {
+  const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24'];
+  for (let i = 0; i < 50; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 2 + 's';
+      document.body.appendChild(confetti);
+      
+      setTimeout(() => confetti.remove(), 3000);
+    }, i * 30);
+  }
+}
+
+// Load registration data
+window.addEventListener('load', () => {
+  const data = sessionStorage.getItem('registrationData');
+  const detailsSection = document.getElementById('detailsSection');
+  
+  if (data) {
+    const regData = JSON.parse(data);
+    detailsSection.innerHTML = `
+      <div class="detail-item">
+        <span class="detail-label">Institute:</span>
+        <span class="detail-value">${regData.institute}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Department:</span>
+        <span class="detail-value">${regData.dept}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Name:</span>
+        <span class="detail-value">${regData.name}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">WhatsApp:</span>
+        <span class="detail-value">${regData.phone}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value">${regData.email}</span>
+      </div>
+    `;
+  } else {
+    detailsSection.innerHTML = `
+      <p style="text-align: center; color: #666;">Registration details not available. Please check your email for confirmation.</p>
+    `;
+  }
+  
+  // Trigger confetti
+  createConfetti();
+});
+</script>
+
+</body>
+</html>

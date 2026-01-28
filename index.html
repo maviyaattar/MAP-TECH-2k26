@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <style>
 /* Root variables */
@@ -168,6 +169,35 @@ body{background:#fff;color:#333;line-height:1.6;}
 
 .alert-close:hover {
   opacity: 1;
+}
+
+/* Field Error Messages */
+.field-error {
+  display: none;
+  color: var(--error-color);
+  font-size: 13px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  background: #fee;
+  border-radius: 4px;
+  border-left: 3px solid var(--error-color);
+  animation: slideIn 0.3s ease-out;
+}
+
+.field-error.show {
+  display: block;
+}
+
+.form-group.has-error input,
+.form-group.has-error select {
+  border-color: var(--error-color);
+  background: #fff5f5;
+}
+
+.form-group.has-success input,
+.form-group.has-success select {
+  border-color: var(--success-color);
+  background: #f0fff4;
 }
 
 /* HERO */
@@ -416,6 +446,7 @@ body{background:#fff;color:#333;line-height:1.6;}
     <div class="form-group">
       <label>Institute Name</label>
       <input type="text" id="institute" required>
+      <div class="field-error" id="institute-error"></div>
     </div>
 
     <div class="form-group">
@@ -427,21 +458,25 @@ body{background:#fff;color:#333;line-height:1.6;}
         <option>Electronics & Telecommunication Engineering</option>
         <option>Other (Diploma Course)</option>
       </select>
+      <div class="field-error" id="dept-error"></div>
     </div>
 
     <div class="form-group">
       <label>Full Name</label>
       <input type="text" id="name" required>
+      <div class="field-error" id="name-error"></div>
     </div>
 
     <div class="form-group">
       <label>WhatsApp Number</label>
       <input type="tel" id="phone" required>
+      <div class="field-error" id="phone-error"></div>
     </div>
 
     <div class="form-group">
       <label>Email</label>
       <input type="email" id="email" required>
+      <div class="field-error" id="email-error"></div>
     </div>
 
     <div class="form-group">
@@ -452,21 +487,16 @@ body{background:#fff;color:#333;line-height:1.6;}
         <option value="Poster Presentation">Poster Presentation</option>
         <option value="Technical Quiz">Technical Quiz</option>
       </select>
+      <div class="field-error" id="event-error"></div>
     </div>
 
     <h3 style="color:#0D47A1;">Payment ₹60</h3>
-    <img src="Scanner.jpg" class="qr">
-
-    <button type="button" class="pay-btn" onclick="payNow()">Pay via UPI</button>
-
-    <div class="form-group">
-      <label>Upload Payment Screenshot</label>
-      <label class="file-btn" id="fileLabel">
-        <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
-        <span id="fileText">Select Screenshot</span>
-        <input type="file" id="screenshot" accept="image/*" required onchange="previewFile()" aria-label="Upload payment screenshot">
-      </label>
-      <div id="filePreview" class="file-preview"></div>
+    
+    <button type="button" class="pay-btn" id="payBtn" onclick="initiatePayment()">
+      <i class="fas fa-credit-card"></i> Pay ₹60 via Razorpay
+    </button>
+    
+    <div id="paymentStatus" style="display: none; margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600;">
     </div>
 
     <div class="progress-bar" id="progressBar">
@@ -495,6 +525,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// Store payment status
+let paymentCompleted = false;
+let paymentId = null;
+
+// Razorpay configuration
+// NOTE: This is a TEST API key for development/demo purposes only.
+// In production, payment verification should be handled server-side with signature validation.
+// The API key should be stored securely in environment variables and payment orders should be
+// created via a backend API endpoint to prevent client-side manipulation.
+const RAZORPAY_KEY = 'rzp_test_S9Luyj7D1mAl2g';
 
 // Show alert function
 function showAlert(message, type = 'info') {
@@ -529,6 +570,176 @@ function toggleLoader(show) {
     loader.classList.add('hidden');
   }
 }
+
+// Clear field error
+function clearFieldError(fieldId) {
+  const errorDiv = document.getElementById(`${fieldId}-error`);
+  const formGroup = document.getElementById(fieldId).closest('.form-group');
+  
+  if (errorDiv) {
+    errorDiv.classList.remove('show');
+    errorDiv.textContent = '';
+  }
+  
+  if (formGroup) {
+    formGroup.classList.remove('has-error');
+    formGroup.classList.add('has-success');
+  }
+}
+
+// Show field error
+function showFieldError(fieldId, message) {
+  const errorDiv = document.getElementById(`${fieldId}-error`);
+  const formGroup = document.getElementById(fieldId).closest('.form-group');
+  
+  if (errorDiv) {
+    errorDiv.textContent = message;
+    errorDiv.classList.add('show');
+  }
+  
+  if (formGroup) {
+    formGroup.classList.add('has-error');
+    formGroup.classList.remove('has-success');
+  }
+}
+
+// Validate all required fields
+function validateAllFields() {
+  const institute = document.getElementById("institute").value.trim();
+  const dept = document.getElementById("dept").value.trim();
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const event = document.getElementById("event").value;
+
+  let isValid = true;
+
+  // Clear all previous errors
+  ['institute', 'dept', 'name', 'phone', 'email', 'event'].forEach(fieldId => {
+    clearFieldError(fieldId);
+  });
+
+  // Validate Institute
+  if (!institute) {
+    showFieldError('institute', 'Institute Name is required');
+    isValid = false;
+  }
+
+  // Validate Department
+  if (!dept) {
+    showFieldError('dept', 'Department is required');
+    isValid = false;
+  }
+
+  // Validate Name
+  if (!name) {
+    showFieldError('name', 'Full Name is required');
+    isValid = false;
+  }
+
+  // Validate Phone
+  if (!phone) {
+    showFieldError('phone', 'WhatsApp Number is required');
+    isValid = false;
+  } else if (!/^[0-9]{10}$/.test(phone)) {
+    showFieldError('phone', 'WhatsApp Number must be 10 digits');
+    isValid = false;
+  } else if (!/^[6-9][0-9]{9}$/.test(phone)) {
+    showFieldError('phone', 'WhatsApp Number must start with 6, 7, 8, or 9');
+    isValid = false;
+  }
+
+  // Validate Email
+  if (!email) {
+    showFieldError('email', 'Email is required');
+    isValid = false;
+  } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+    showFieldError('email', 'Please enter a valid email address');
+    isValid = false;
+  }
+
+  // Validate Event
+  if (!event) {
+    showFieldError('event', 'Please select an Event/Workshop');
+    isValid = false;
+  }
+
+  return isValid;
+}
+
+// Initiate Razorpay payment
+window.initiatePayment = function() {
+  // Validate all fields before payment
+  const isValid = validateAllFields();
+  
+  if (!isValid) {
+    showAlert("Please fix all errors before proceeding to payment.", "error");
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: 6000, // Amount in paise (₹60)
+    currency: 'INR',
+    name: 'MAP-TECH 2K26',
+    description: 'Event Registration Fee',
+    image: 'logo.jpg',
+    prefill: {
+      name: name,
+      email: email,
+      contact: phone
+    },
+    theme: {
+      color: '#0D47A1'
+    },
+    handler: function(response) {
+      // Payment successful
+      paymentId = response.razorpay_payment_id;
+      paymentCompleted = true;
+      
+      const statusDiv = document.getElementById('paymentStatus');
+      statusDiv.style.display = 'block';
+      statusDiv.style.background = '#d4edda';
+      statusDiv.style.color = '#155724';
+      statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Payment Successful! Payment ID: ' + paymentId;
+      
+      const payBtn = document.getElementById('payBtn');
+      payBtn.disabled = true;
+      payBtn.style.opacity = '0.6';
+      payBtn.innerHTML = '<i class="fas fa-check-circle"></i> Payment Completed';
+      
+      showAlert("Payment completed successfully! You can now submit your registration.", "success");
+    },
+    modal: {
+      ondismiss: function() {
+        if (!paymentCompleted) {
+          showAlert("Payment was cancelled. Please complete the payment to register.", "warning");
+        }
+      }
+    }
+  };
+
+  try {
+    // Check if Razorpay SDK is loaded
+    if (typeof Razorpay === 'undefined') {
+      showAlert("Payment system is not available. Please refresh the page and try again.", "error");
+      return;
+    }
+    
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function(response) {
+      showAlert("Payment failed: " + (response.error.description || "Unknown error"), "error");
+    });
+    rzp.open();
+  } catch (error) {
+    console.error('Razorpay error:', error);
+    showAlert("Error initializing payment gateway. Please refresh the page and try again.", "error");
+  }
+};
 
 // File preview function
 window.previewFile = function() {
@@ -582,70 +793,47 @@ document.querySelectorAll('.pay-btn, .submit-btn').forEach(button => {
   });
 });
 
-window.payNow = () => {
-  window.location.href="upi://pay?pa=meraj.pathan1@ibl&pn=MAPTECH2K26&am=60&cu=INR";
-  showAlert('Redirecting to payment app...', 'info');
-};
-
 document.getElementById("regForm").addEventListener("submit", async e => {
   e.preventDefault();
+  
+  // Validate all required fields first
+  const isValid = validateAllFields();
+  
+  if (!isValid) {
+    showAlert("Please correct all errors in the form before submitting.", "error");
+    return;
+  }
+
+  // Check if payment is completed
+  // NOTE: In production, payment verification should be done server-side by verifying
+  // the payment signature with Razorpay's API to prevent client-side manipulation.
+  // This client-side check is only for user experience in the test environment.
+  if (!paymentCompleted || !paymentId) {
+    showAlert("Please complete the payment before submitting registration.", "error");
+    return;
+  }
   
   toggleLoader(true);
   
   try {
-    const institute = document.getElementById("institute").value;
-    const dept = document.getElementById("dept").value;
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
+    const institute = document.getElementById("institute").value.trim();
+    const dept = document.getElementById("dept").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
     const event = document.getElementById("event").value;
-    const screenshotInput = document.getElementById("screenshot");
-
-    if(!event){
-      showAlert("Please select an event/workshop", "error");
-      toggleLoader(false);
-      return;
-    }
-
-    if(!screenshotInput.files[0]){
-      showAlert("Please upload payment screenshot", "error");
-      toggleLoader(false);
-      return;
-    }
 
     // Show progress
     const progressBar = document.getElementById('progressBar');
     const progressFill = document.getElementById('progressFill');
     progressBar.classList.add('active');
-    progressFill.style.width = '30%';
-
-    const file = screenshotInput.files[0];
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "maptech_preset");
-
-    progressFill.style.width = '60%';
-
-    const res = await fetch("https://api.cloudinary.com/v1_1/dgt4rfzqb/image/upload",{
-      method:"POST",
-      body:data
-    });
-
-    if (!res.ok) {
-      throw new Error('Upload failed. Please try again.');
-    }
-
-    const result = await res.json();
-    
-    if (!result.secure_url) {
-      throw new Error('Invalid upload response. Please try again.');
-    }
-    
-    progressFill.style.width = '80%';
+    progressFill.style.width = '50%';
 
     await addDoc(collection(db,"registrations"),{
       institute, dept, name, phone, email, event,
-      screenshot: result.secure_url,
+      paymentId: paymentId,
+      paymentAmount: 60,
+      paymentStatus: 'completed',
       timestamp: new Date().toISOString()
     });
 
@@ -666,6 +854,25 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     showAlert("Registration failed. Please try again.", "error");
     toggleLoader(false);
     document.getElementById('progressBar').classList.remove('active');
+  }
+});
+
+// Add real-time validation on blur
+['institute', 'dept', 'name', 'phone', 'email', 'event'].forEach(fieldId => {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    field.addEventListener('blur', function() {
+      validateAllFields();
+    });
+    
+    // Clear error on input
+    field.addEventListener('input', function() {
+      const errorDiv = document.getElementById(`${fieldId}-error`);
+      if (errorDiv && errorDiv.classList.contains('show')) {
+        // Re-validate just this field
+        setTimeout(() => validateAllFields(), 300);
+      }
+    });
   }
 });
 

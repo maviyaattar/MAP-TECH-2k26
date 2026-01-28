@@ -8,6 +8,7 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
 - **Responsive Layout**: Optimized for both desktop and mobile devices
 - **Interactive Form**: Real-time validation with smooth animations
 - **Razorpay Integration**: Secure online payment processing via Razorpay gateway
+- **Test Mode**: Skip payment option for testing and development
 - **Robust Validation**: All fields are mandatory with comprehensive validation
 - **Auto-complete**: Smart institute name suggestions
 - **Smooth Scrolling**: Seamless navigation between sections
@@ -25,18 +26,25 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
 
 ## Usage
 
+### For Regular Users:
 1. Open `index.html` in a modern web browser
 2. Fill in all the required registration form fields:
    - Institute Name (mandatory)
    - Department (mandatory)
    - Full Name (mandatory)
-   - WhatsApp Number (mandatory, 10 digits)
+   - WhatsApp Number (mandatory, 10 digits starting with 6-9)
    - Email (mandatory, valid format)
    - Event/Workshop selection (mandatory)
 3. Click "Pay ₹60 via Razorpay" to initiate payment
 4. Complete payment using Razorpay's secure payment gateway
 5. After successful payment, submit the registration form
 6. View your confirmation on the thank you page
+
+### For Developers/Testing:
+1. Fill in all the required registration form fields
+2. Click "Skip Payment (Test Mode)" (orange button) to bypass payment
+3. Submit the registration form - data will be stored with `paymentStatus: 'test-mode'`
+4. Test registrations are clearly marked in the database for easy identification
 
 ## Keyboard Shortcuts
 

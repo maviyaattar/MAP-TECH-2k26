@@ -4,36 +4,245 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAP-TECH 2K26 Registration</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-body{background:#fff;color:#333;}
+/* Root variables */
+:root {
+  --primary-color: #0D47A1;
+  --secondary-color: #1976D2;
+  --accent-color: #42A5F5;
+  --success-color: #4CAF50;
+  --error-color: #f44336;
+  --warning-color: #ff9800;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#fff;color:#333;line-height:1.6;}
+
+/* Loading Spinner */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-overlay.hidden {
+  display: none;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-text {
+  margin-left: 20px;
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Skeleton Loader */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.skeleton-box {
+  height: 100px;
+  margin-bottom: 15px;
+}
+
+/* Alert Styles */
+.alert {
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border-left: 4px solid var(--success-color);
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid var(--error-color);
+}
+
+.alert-warning {
+  background: #fff3cd;
+  color: #856404;
+  border-left: 4px solid var(--warning-color);
+}
+
+.alert-info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border-left: 4px solid #17a2b8;
+}
+
+.alert i {
+  font-size: 24px;
+}
+
+.alert-close {
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.alert-close:hover {
+  opacity: 1;
+}
 
 /* HERO */
 .hero{
   text-align:center;padding:50px 20px;
-  background:#f5f8ff;border-bottom:5px solid #0D47A1;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom:5px solid var(--primary-color);
+  color: white;
+  animation: fadeIn 0.8s ease-out;
 }
-.hero img{width:90px;margin-bottom:10px;}
-.hero h1{font-size:32px;color:#0D47A1;}
-.hero p{color:#555;}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hero img{
+  width:90px;
+  margin-bottom:10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero h1{
+  font-size:42px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 10px;
+}
+
+.hero p{
+  font-size: 18px;
+  font-weight: 300;
+}
 
 /* FORM */
 .form-section{
   max-width:650px;margin:25px auto;padding:25px;background:#fff;
   border-radius:18px;box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  animation: slideUp 0.6s ease-out;
 }
-.form-group{margin-bottom:15px;}
-.form-group label{font-weight:600;}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group{
+  margin-bottom:15px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.form-group label{
+  font-weight:600;
+  color: var(--primary-color);
+  display: block;
+  margin-bottom: 5px;
+}
+
 .form-group input,.form-group select{
-  width:100%;padding:11px;margin-top:6px;border:1px solid #ccc;border-radius:8px;
+  width:100%;padding:11px;margin-top:6px;border:2px solid #e0e0e0;border-radius:8px;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-group input:focus,.form-group select:focus{
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
 /* QR */
 .qr{
   display:block;margin:10px auto;width:170px;
-  border:4px solid #1976D2;border-radius:12px;padding:8px;
+  border:4px solid var(--secondary-color);border-radius:12px;padding:8px;
+  transition: transform 0.3s ease;
+}
+
+.qr:hover {
+  transform: scale(1.05);
 }
 
 /* File Upload Button */
@@ -41,30 +250,139 @@ body{background:#fff;color:#333;}
   display:block;
   padding:12px;
   background:#e3f2fd;
-  border:2px dashed #1976D2;
+  border:2px dashed var(--secondary-color);
   border-radius:10px;
   text-align:center;
-  color:#0D47A1;
+  color:var(--primary-color);
   font-weight:600;
   cursor:pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+.file-btn:hover {
+  background: #bbdefb;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.2);
+}
+
 .file-btn input{
   display:none;
 }
 
+.file-btn i {
+  font-size: 24px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.file-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.file-preview img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 15px 0;
+  display: none;
+}
+
+.progress-bar.active {
+  display: block;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
 /* Buttons */
 .pay-btn,.submit-btn{
-  width:100%;padding:12px;margin:8px 0;border:none;border-radius:8px;font-size:16px;
+  width:100%;padding:14px;margin:8px 0;border:none;border-radius:8px;font-size:16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
-.pay-btn{background:#1976D2;color:white;}
-.submit-btn{background:#333;color:white;}
+
+.pay-btn{
+  background:linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+  color:white;
+}
+
+.pay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+}
+
+.submit-btn{
+  background:linear-gradient(135deg, #333, #555);
+  color:white;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.submit-btn:disabled, .pay-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Ripple Effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple-animation 0.6s ease-out;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 32px; }
+  .form-section { margin: 15px; padding: 20px; }
+}
 </style>
 </head>
 
 <body>
 
+<!-- Loading Overlay -->
+<div class="loader-overlay" id="loader">
+  <div class="loader"></div>
+  <div class="loader-text">Loading...</div>
+</div>
+
 <section class="hero">
-  <img src="logo.png">
+  <img src="logo.jpg">
   <h1>MAP-TECH 2K26</h1>
   <p>State Level Technical Event</p>
 </section>
@@ -102,17 +420,35 @@ body{background:#fff;color:#333;}
       <input type="email" id="email" required>
     </div>
 
+    <div class="form-group">
+      <label>Select Event/Workshop</label>
+      <select id="event" required>
+        <option value="">-- Choose Event --</option>
+        <option value="Web Development Workshop">Web Development Workshop</option>
+        <option value="AI/ML Seminar">AI/ML Seminar</option>
+        <option value="Robotics Competition">Robotics Competition</option>
+        <option value="Hackathon">Hackathon</option>
+        <option value="Tech Quiz">Tech Quiz</option>
+      </select>
+    </div>
+
     <h3 style="color:#0D47A1;">Payment ₹60</h3>
-    <img src="scanner.png" class="qr">
+    <img src="Scanner.jpg" class="qr">
 
     <button type="button" class="pay-btn" onclick="payNow()">Pay via UPI</button>
 
     <div class="form-group">
       <label>Upload Payment Screenshot</label>
-      <label class="file-btn">
-        Select Screenshot
-        <input type="file" id="screenshot" accept="image/*" required>
+      <label class="file-btn" id="fileLabel">
+        <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
+        <span id="fileText">Select Screenshot</span>
+        <input type="file" id="screenshot" accept="image/*" required onchange="previewFile()" aria-label="Upload payment screenshot">
       </label>
+      <div id="filePreview" class="file-preview"></div>
+    </div>
+
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-bar-fill" id="progressFill"></div>
     </div>
 
     <button type="submit" class="submit-btn">Submit Registration</button>
@@ -132,44 +468,184 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.payNow = () => {
-  window.location.href="upi://pay?pa=meraj.pathan1@ibl&pn=MAPTECH2K26&am=60&cu=INR";
+// Show alert function
+function showAlert(message, type = 'info') {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert alert-${type}`;
+  
+  const icons = {
+    success: 'fa-check-circle',
+    error: 'fa-exclamation-circle',
+    warning: 'fa-exclamation-triangle',
+    info: 'fa-info-circle'
+  };
+  
+  alertDiv.innerHTML = `
+    <i class="fas ${icons[type]}"></i>
+    <span>${message}</span>
+    <span class="alert-close" onclick="this.parentElement.remove()">×</span>
+  `;
+  
+  const formSection = document.querySelector('.form-section');
+  formSection.insertBefore(alertDiv, formSection.firstChild);
+  
+  setTimeout(() => alertDiv.remove(), 5000);
+}
+
+// Show/hide loader
+function toggleLoader(show) {
+  const loader = document.getElementById('loader');
+  if (show) {
+    loader.classList.remove('hidden');
+  } else {
+    loader.classList.add('hidden');
+  }
+}
+
+// File preview function
+window.previewFile = function() {
+  const fileInput = document.getElementById('screenshot');
+  const fileText = document.getElementById('fileText');
+  const filePreview = document.getElementById('filePreview');
+  
+  if (fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      showAlert('File size too large. Please select a file smaller than 5MB.', 'error');
+      fileInput.value = '';
+      return;
+    }
+    
+    fileText.textContent = file.name;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      filePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+    };
+    reader.onerror = function() {
+      showAlert('Error reading file. Please try again.', 'error');
+      filePreview.innerHTML = '';
+    };
+    reader.readAsDataURL(file);
+  }
 };
 
-document.getElementById("regForm").addEventListener("submit", async e=>{
+// Add ripple effect to buttons
+document.querySelectorAll('.pay-btn, .submit-btn').forEach(button => {
+  button.addEventListener('click', function(e) {
+    const ripple = document.createElement('span');
+    ripple.classList.add('ripple');
+    
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    
+    this.appendChild(ripple);
+    
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+window.payNow = () => {
+  window.location.href="upi://pay?pa=meraj.pathan1@ibl&pn=MAPTECH2K26&am=60&cu=INR";
+  showAlert('Redirecting to payment app...', 'info');
+};
+
+document.getElementById("regForm").addEventListener("submit", async e => {
   e.preventDefault();
+  
+  toggleLoader(true);
+  
+  try {
+    const institute = document.getElementById("institute").value;
+    const dept = document.getElementById("dept").value;
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+    const event = document.getElementById("event").value;
+    const screenshotInput = document.getElementById("screenshot");
 
-  const institute = document.getElementById("institute").value;
-  const dept = document.getElementById("dept").value;
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const email = document.getElementById("email").value;
-  const screenshotInput = document.getElementById("screenshot");
+    if(!event){
+      showAlert("Please select an event/workshop", "error");
+      toggleLoader(false);
+      return;
+    }
 
-  if(!screenshotInput.files[0]){
-    alert("Please upload screenshot");
-    return;
+    if(!screenshotInput.files[0]){
+      showAlert("Please upload payment screenshot", "error");
+      toggleLoader(false);
+      return;
+    }
+
+    // Show progress
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+    progressBar.classList.add('active');
+    progressFill.style.width = '30%';
+
+    const file = screenshotInput.files[0];
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "maptech_preset");
+
+    progressFill.style.width = '60%';
+
+    const res = await fetch("https://api.cloudinary.com/v1_1/dgt4rfzqb/image/upload",{
+      method:"POST",
+      body:data
+    });
+
+    if (!res.ok) {
+      throw new Error('Upload failed. Please try again.');
+    }
+
+    const result = await res.json();
+    
+    if (!result.secure_url) {
+      throw new Error('Invalid upload response. Please try again.');
+    }
+    
+    progressFill.style.width = '80%';
+
+    await addDoc(collection(db,"registrations"),{
+      institute, dept, name, phone, email, event,
+      screenshot: result.secure_url,
+      timestamp: new Date().toISOString()
+    });
+
+    progressFill.style.width = '100%';
+    
+    // Store data in sessionStorage for confirmation page
+    sessionStorage.setItem('registrationData', JSON.stringify({
+      institute, dept, name, phone, email, event
+    }));
+    
+    setTimeout(() => {
+      toggleLoader(false);
+      window.location.href = 'thankyou.html';
+    }, 500);
+    
+  } catch (error) {
+    console.error('Error:', error);
+    showAlert("Registration failed. Please try again.", "error");
+    toggleLoader(false);
+    document.getElementById('progressBar').classList.remove('active');
   }
+});
 
-  const file = screenshotInput.files[0];
-  const data = new FormData();
-  data.append("file", file);
-  data.append("upload_preset", "maptech_preset");
-
-  const res = await fetch("https://api.cloudinary.com/v1_1/dgt4rfzqb/image/upload",{
-    method:"POST",
-    body:data
-  });
-
-  const result = await res.json();
-
-  await addDoc(collection(db,"registrations"),{
-    institute, dept, name, phone, email,
-    screenshot: result.secure_url
-  });
-
-  alert("Registration Successful 🎉");
-  regForm.reset();
+// Page load animation - hide loader after page loads
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    toggleLoader(false);
+  }, 800); // Show loader for at least 800ms
 });
 </script>
 

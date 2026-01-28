@@ -289,49 +289,6 @@ body {
   color: white;
 }
 
-.screenshot-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 10000;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.screenshot-modal.active {
-  display: flex;
-}
-
-.modal-content {
-  max-width: 90%;
-  max-height: 90%;
-  position: relative;
-}
-
-.modal-content img {
-  max-width: 100%;
-  max-height: 80vh;
-  border-radius: 10px;
-}
-
-.modal-close {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  background: white;
-  color: #333;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -417,14 +374,6 @@ body {
 
 <div class="cards-container" id="cardsContainer">
   <!-- Registration cards will be loaded here -->
-</div>
-
-<!-- Screenshot Modal -->
-<div class="screenshot-modal" id="screenshotModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <img id="modalImage" src="" alt="Payment Screenshot">
-  </div>
 </div>
 
 <script type="module">
@@ -546,12 +495,28 @@ function displayRegistrations() {
               <div class="field-value">${reg.email || 'N/A'}</div>
             </div>
           </div>
+          
+          <div class="card-field">
+            <i class="fas fa-credit-card"></i>
+            <div>
+              <div class="field-label">Payment ID</div>
+              <div class="field-value">${reg.paymentId || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div class="card-field">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <div class="field-label">Payment Status</div>
+              <div class="field-value">${reg.paymentStatus || 'N/A'}</div>
+            </div>
+          </div>
         </div>
         
         <div class="card-footer">
-          <button class="card-btn btn-view" onclick="viewScreenshot('${reg.screenshot}')">
-            <i class="fas fa-image"></i> View Payment
-          </button>
+          <div style="color: #4CAF50; font-weight: 600; text-align: center; padding: 10px;">
+            <i class="fas fa-rupee-sign"></i> ₹${reg.paymentAmount || '60'} - ${reg.paymentStatus || 'Completed'}
+          </div>
         </div>
       </div>
     `;
@@ -584,24 +549,6 @@ window.applyFilters = function() {
   displayRegistrations();
 };
 
-// View screenshot
-window.viewScreenshot = function(url) {
-  if (!url) {
-    alert('No screenshot available');
-    return;
-  }
-  const modal = document.getElementById('screenshotModal');
-  const img = document.getElementById('modalImage');
-  img.src = url;
-  modal.classList.add('active');
-};
-
-// Close modal
-window.closeModal = function() {
-  const modal = document.getElementById('screenshotModal');
-  modal.classList.remove('active');
-};
-
 // Export to CSV
 window.exportData = function() {
   if (filteredRegistrations.length === 0) {
@@ -609,7 +556,7 @@ window.exportData = function() {
     return;
   }
   
-  const headers = ['Name', 'Institute', 'Department', 'Event', 'Phone', 'Email', 'Registration Date'];
+  const headers = ['Name', 'Institute', 'Department', 'Event', 'Phone', 'Email', 'Payment ID', 'Payment Status', 'Registration Date'];
   const rows = filteredRegistrations.map(reg => [
     reg.name || '',
     reg.institute || '',
@@ -617,6 +564,8 @@ window.exportData = function() {
     reg.event || '',
     reg.phone || '',
     reg.email || '',
+    reg.paymentId || '',
+    reg.paymentStatus || '',
     reg.timestamp ? new Date(reg.timestamp).toLocaleString() : ''
   ]);
   

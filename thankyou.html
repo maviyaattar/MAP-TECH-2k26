@@ -61,8 +61,14 @@ body::before {
   max-width: 600px;
   animation: slideUp 0.6s ease-out;
   position: relative;
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@supports (backdrop-filter: blur(10px)) {
+  .container {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+  }
 }
 
 @keyframes slideUp {
@@ -140,13 +146,13 @@ body::before {
 h1 {
   font-family: 'Orbitron', sans-serif;
   font-size: 42px;
+  color: var(--primary-color); /* Fallback for browsers without gradient support */
   background: linear-gradient(135deg, #0D47A1 0%, #1976D2 50%, #42A5F5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 15px;
   animation: fadeIn 0.6s ease-out 0.4s both;
-  text-shadow: none;
   letter-spacing: 1px;
 }
 
@@ -180,17 +186,16 @@ h1 {
 .detail-item {
   display: flex;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 14px 8px;
   border-bottom: 1px solid rgba(13, 71, 161, 0.1);
   transition: all 0.3s ease;
+  margin: 0 -8px;
+  border-radius: 8px;
 }
 
 .detail-item:hover {
-  padding-left: 8px;
   background: rgba(255, 255, 255, 0.5);
-  margin: 0 -8px;
-  padding-right: 8px;
-  border-radius: 8px;
+  transform: translateX(4px);
 }
 
 .detail-item:last-child {
@@ -215,11 +220,10 @@ h1 {
   padding: 22px 24px;
   border-radius: 14px;
   margin: 30px 0;
-  border-left: 5px solid var(--success-color);
   animation: fadeIn 0.6s ease-out 0.7s both;
   box-shadow: 0 4px 15px rgba(76, 175, 80, 0.15);
   border: 1px solid rgba(76, 175, 80, 0.2);
-  border-left-width: 5px;
+  border-left: 5px solid var(--success-color);
 }
 
 .message-box i {

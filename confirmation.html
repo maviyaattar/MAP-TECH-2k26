@@ -376,10 +376,6 @@ body {
         <i class="fas fa-print"></i>
         Print Confirmation
       </button>
-      <button class="btn btn-secondary" onclick="downloadPDF()">
-        <i class="fas fa-download"></i>
-        Download PDF
-      </button>
       <a href="index.html" class="btn btn-secondary">
         <i class="fas fa-home"></i>
         Back to Home
@@ -394,11 +390,12 @@ body {
 </div>
 
 <script>
-// Generate a confirmation ID
+// Generate a confirmation ID with timestamp for uniqueness
 function generateConfirmationId() {
   const prefix = 'MT2K26';
-  const random = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-  return `${prefix}-${random}`;
+  const timestamp = Date.now().toString().slice(-6);
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  return `${prefix}-${timestamp}${random}`;
 }
 
 // Load registration data
@@ -413,38 +410,41 @@ window.addEventListener('load', () => {
   
   if (data) {
     const regData = JSON.parse(data);
-    participantInfo.innerHTML = `
-      <div class="info-item">
-        <div class="info-label">Full Name</div>
-        <div class="info-value">${regData.name}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Institute</div>
-        <div class="info-value">${regData.institute}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Department</div>
-        <div class="info-value">${regData.dept}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">WhatsApp Number</div>
-        <div class="info-value">${regData.phone}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Email Address</div>
-        <div class="info-value">${regData.email}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Registration Date</div>
-        <div class="info-value">${new Date().toLocaleDateString()}</div>
-      </div>
-    `;
+    
+    // Create elements safely using textContent to prevent XSS
+    const createInfoItem = (label, value) => {
+      const div = document.createElement('div');
+      div.className = 'info-item';
+      
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'info-label';
+      labelDiv.textContent = label;
+      
+      const valueDiv = document.createElement('div');
+      valueDiv.className = 'info-value';
+      valueDiv.textContent = value;
+      
+      div.appendChild(labelDiv);
+      div.appendChild(valueDiv);
+      return div;
+    };
+    
+    participantInfo.innerHTML = ''; // Clear skeleton
+    participantInfo.appendChild(createInfoItem('Full Name', regData.name || 'N/A'));
+    participantInfo.appendChild(createInfoItem('Institute', regData.institute || 'N/A'));
+    participantInfo.appendChild(createInfoItem('Department', regData.dept || 'N/A'));
+    participantInfo.appendChild(createInfoItem('WhatsApp Number', regData.phone || 'N/A'));
+    participantInfo.appendChild(createInfoItem('Email Address', regData.email || 'N/A'));
+    participantInfo.appendChild(createInfoItem('Registration Date', new Date().toLocaleDateString()));
   } else {
-    participantInfo.innerHTML = `
-      <p style="grid-column: 1/-1; text-align: center; color: #666; padding: 20px;">
-        Registration details not found. Please complete the registration process first.
-      </p>
-    `;
+    const p = document.createElement('p');
+    p.style.gridColumn = '1/-1';
+    p.style.textAlign = 'center';
+    p.style.color = '#666';
+    p.style.padding = '20px';
+    p.textContent = 'Registration details not found. Please complete the registration process first.';
+    participantInfo.innerHTML = '';
+    participantInfo.appendChild(p);
   }
 });
 

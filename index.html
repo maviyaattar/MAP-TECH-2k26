@@ -310,12 +310,6 @@ body{background:#fff;color:#333;line-height:1.6;}
   background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
   width: 0%;
   transition: width 0.3s ease;
-  animation: progress 2s ease-in-out infinite;
-}
-
-@keyframes progress {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(400%); }
 }
 
 /* Buttons */
@@ -434,9 +428,9 @@ body{background:#fff;color:#333;line-height:1.6;}
     <div class="form-group">
       <label>Upload Payment Screenshot</label>
       <label class="file-btn" id="fileLabel">
-        <i class="fas fa-cloud-upload-alt"></i>
+        <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
         <span id="fileText">Select Screenshot</span>
-        <input type="file" id="screenshot" accept="image/*" required onchange="previewFile()">
+        <input type="file" id="screenshot" accept="image/*" required onchange="previewFile()" aria-label="Upload payment screenshot">
       </label>
       <div id="filePreview" class="file-preview"></div>
     </div>
@@ -504,11 +498,24 @@ window.previewFile = function() {
   
   if (fileInput.files && fileInput.files[0]) {
     const file = fileInput.files[0];
+    
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      showAlert('File size too large. Please select a file smaller than 5MB.', 'error');
+      fileInput.value = '';
+      return;
+    }
+    
     fileText.textContent = file.name;
     
     const reader = new FileReader();
     reader.onload = function(e) {
       filePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+    };
+    reader.onerror = function() {
+      showAlert('Error reading file. Please try again.', 'error');
+      filePreview.innerHTML = '';
     };
     reader.readAsDataURL(file);
   }
@@ -577,7 +584,16 @@ document.getElementById("regForm").addEventListener("submit", async e => {
       body:data
     });
 
+    if (!res.ok) {
+      throw new Error('Upload failed. Please try again.');
+    }
+
     const result = await res.json();
+    
+    if (!result.secure_url) {
+      throw new Error('Invalid upload response. Please try again.');
+    }
+    
     progressFill.style.width = '80%';
 
     await addDoc(collection(db,"registrations"),{

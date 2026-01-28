@@ -197,7 +197,6 @@ h1 {
   width: 10px;
   height: 10px;
   background: #ffd700;
-  position: absolute;
   animation: confetti-fall 3s ease-out forwards;
 }
 
@@ -288,32 +287,38 @@ window.addEventListener('load', () => {
   
   if (data) {
     const regData = JSON.parse(data);
-    detailsSection.innerHTML = `
-      <div class="detail-item">
-        <span class="detail-label">Institute:</span>
-        <span class="detail-value">${regData.institute}</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Department:</span>
-        <span class="detail-value">${regData.dept}</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Name:</span>
-        <span class="detail-value">${regData.name}</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">WhatsApp:</span>
-        <span class="detail-value">${regData.phone}</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Email:</span>
-        <span class="detail-value">${regData.email}</span>
-      </div>
-    `;
+    
+    // Create elements safely using textContent to prevent XSS
+    const createDetailItem = (label, value) => {
+      const div = document.createElement('div');
+      div.className = 'detail-item';
+      
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'detail-label';
+      labelSpan.textContent = label + ':';
+      
+      const valueSpan = document.createElement('span');
+      valueSpan.className = 'detail-value';
+      valueSpan.textContent = value;
+      
+      div.appendChild(labelSpan);
+      div.appendChild(valueSpan);
+      return div;
+    };
+    
+    detailsSection.innerHTML = ''; // Clear skeleton
+    detailsSection.appendChild(createDetailItem('Institute', regData.institute || 'N/A'));
+    detailsSection.appendChild(createDetailItem('Department', regData.dept || 'N/A'));
+    detailsSection.appendChild(createDetailItem('Name', regData.name || 'N/A'));
+    detailsSection.appendChild(createDetailItem('WhatsApp', regData.phone || 'N/A'));
+    detailsSection.appendChild(createDetailItem('Email', regData.email || 'N/A'));
   } else {
-    detailsSection.innerHTML = `
-      <p style="text-align: center; color: #666;">Registration details not available. Please check your email for confirmation.</p>
-    `;
+    const p = document.createElement('p');
+    p.style.textAlign = 'center';
+    p.style.color = '#666';
+    p.textContent = 'Registration details not available. Please check your email for confirmation.';
+    detailsSection.innerHTML = '';
+    detailsSection.appendChild(p);
   }
   
   // Trigger confetti

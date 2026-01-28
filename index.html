@@ -1,242 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Register for MAPTECH-2K26 - A premier college technical event">
-    <title>MAPTECH-2K26 | Registration</title>
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAP-TECH 2K26 Registration</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#fff;color:#333;}
+
+/* HERO */
+.hero{
+  text-align:center;padding:50px 20px;
+  background:#f5f8ff;border-bottom:5px solid #0D47A1;
+}
+.hero img{width:90px;margin-bottom:10px;}
+.hero h1{font-size:32px;color:#0D47A1;}
+.hero p{color:#555;}
+
+/* FORM */
+.form-section{
+  max-width:650px;margin:25px auto;padding:25px;background:#fff;
+  border-radius:18px;box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+.form-group{margin-bottom:15px;}
+.form-group label{font-weight:600;}
+.form-group input,.form-group select{
+  width:100%;padding:11px;margin-top:6px;border:1px solid #ccc;border-radius:8px;
+}
+
+/* QR */
+.qr{
+  display:block;margin:10px auto;width:170px;
+  border:4px solid #1976D2;border-radius:12px;padding:8px;
+}
+
+/* File Upload Button */
+.file-btn{
+  display:block;
+  padding:12px;
+  background:#e3f2fd;
+  border:2px dashed #1976D2;
+  border-radius:10px;
+  text-align:center;
+  color:#0D47A1;
+  font-weight:600;
+  cursor:pointer;
+}
+.file-btn input{
+  display:none;
+}
+
+/* Buttons */
+.pay-btn,.submit-btn{
+  width:100%;padding:12px;margin:8px 0;border:none;border-radius:8px;font-size:16px;
+}
+.pay-btn{background:#1976D2;color:white;}
+.submit-btn{background:#333;color:white;}
+</style>
 </head>
+
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="navbar-brand">MAPTECH 2K26</a>
-            <div class="navbar-links">
-                <a href="#header">Home</a>
-                <a href="#registration">Register</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Header Section -->
-    <header class="header" id="header">
-        <div class="container">
-            <div class="logo-container">
-                <img src="logo.svg" alt="MAPTECH Logo" class="logo" id="logo">
-            </div>
-            <div class="event-info">
-                <h1 class="event-title">
-                    <span class="title-main">MAPTECH</span>
-                    <span class="title-year">2K26</span>
-                </h1>
-                <div class="event-details">
-                    <div class="detail-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>March 15-16, 2026</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Engineering Campus Auditorium</span>
-                    </div>
-                </div>
-                <p class="event-tagline">Innovate. Create. Inspire.</p>
-            </div>
-        </div>
-    </header>
+<section class="hero">
+  <img src="logo.png">
+  <h1>MAP-TECH 2K26</h1>
+  <p>State Level Technical Event</p>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h2 class="hero-title">Join the Future of Technology</h2>
-                <p class="hero-description">Register now for the most anticipated technical event of the year. Compete, collaborate, and showcase your skills!</p>
-                <a href="#registration" class="cta-button">
-                    <span>Register Now</span>
-                    <i class="fas fa-arrow-down"></i>
-                </a>
-            </div>
-        </div>
-    </section>
+<section class="form-section">
+  <h2 style="text-align:center;color:#0D47A1;">Registration Form</h2>
+  <form id="regForm">
 
-    <!-- Registration Form Section -->
-    <section class="registration-section" id="registration">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-user-plus"></i>
-                    Event Registration
-                </h2>
-                <p class="section-subtitle">Fill in your details to secure your spot at MAPTECH-2K26</p>
-            </div>
+    <div class="form-group">
+      <label>Institute Name</label>
+      <input type="text" id="institute" required>
+    </div>
 
-            <div class="form-wrapper">
-                <form id="registrationForm" class="registration-form">
-                    <!-- Institute Name -->
-                    <div class="form-group">
-                        <label for="instituteName">
-                            <i class="fas fa-university"></i>
-                            Institute Name
-                        </label>
-                        <input 
-                            type="text" 
-                            id="instituteName" 
-                            name="instituteName" 
-                            placeholder="Enter your institute name"
-                            required
-                        >
-                        <span class="form-hint">Start typing to search colleges</span>
-                    </div>
+    <div class="form-group">
+      <label>Department</label>
+      <select id="dept">
+        <option>Computer Engineering</option>
+        <option>Mechanical</option>
+        <option>Electrical</option>
+      </select>
+    </div>
 
-                    <!-- Participant Name -->
-                    <div class="form-group">
-                        <label for="participantName">
-                            <i class="fas fa-user"></i>
-                            Participant Name
-                        </label>
-                        <input 
-                            type="text" 
-                            id="participantName" 
-                            name="participantName" 
-                            placeholder="Enter your full name"
-                            required
-                        >
-                    </div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="name" required>
+    </div>
 
-                    <!-- Department -->
-                    <div class="form-group">
-                        <label for="department">
-                            <i class="fas fa-building"></i>
-                            Department
-                        </label>
-                        <input 
-                            type="text" 
-                            id="department" 
-                            name="department" 
-                            placeholder="e.g., Computer Science, Mechanical"
-                            required
-                        >
-                    </div>
+    <div class="form-group">
+      <label>WhatsApp Number</label>
+      <input type="tel" id="phone" required>
+    </div>
 
-                    <!-- Event Selection -->
-                    <div class="form-group">
-                        <label for="eventSelection">
-                            <i class="fas fa-trophy"></i>
-                            Event Selection
-                        </label>
-                        <select id="eventSelection" name="eventSelection" required>
-                            <option value="">Select an event</option>
-                            <option value="hackathon">24-Hour Hackathon</option>
-                            <option value="coding">Competitive Coding Challenge</option>
-                            <option value="robotics">Robotics Competition</option>
-                            <option value="iot">IoT Innovation Showcase</option>
-                            <option value="webdev">Web Development Contest</option>
-                            <option value="ai-ml">AI/ML Workshop & Competition</option>
-                            <option value="cybersec">Cybersecurity Challenge</option>
-                            <option value="tech-talk">Tech Talk Session</option>
-                        </select>
-                    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="email" required>
+    </div>
 
-                    <!-- WhatsApp Number -->
-                    <div class="form-group">
-                        <label for="whatsappNumber">
-                            <i class="fab fa-whatsapp"></i>
-                            WhatsApp Number
-                        </label>
-                        <input 
-                            type="tel" 
-                            id="whatsappNumber" 
-                            name="whatsappNumber" 
-                            placeholder="+91 XXXXX XXXXX"
-                            pattern="[0-9+\s-]+"
-                            required
-                        >
-                    </div>
+    <h3 style="color:#0D47A1;">Payment ₹60</h3>
+    <img src="scanner.png" class="qr">
 
-                    <!-- Email Address -->
-                    <div class="form-group">
-                        <label for="email">
-                            <i class="fas fa-envelope"></i>
-                            Email Address
-                        </label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="your.email@example.com"
-                            required
-                        >
-                    </div>
+    <button type="button" class="pay-btn" onclick="payNow()">Pay via UPI</button>
 
-                    <!-- Payment Screenshot Upload -->
-                    <div class="form-group file-upload-group">
-                        <label for="paymentScreenshot">
-                            <i class="fas fa-receipt"></i>
-                            Payment Screenshot
-                        </label>
-                        <div class="file-upload-wrapper">
-                            <input 
-                                type="file" 
-                                id="paymentScreenshot" 
-                                name="paymentScreenshot" 
-                                accept="image/*"
-                                required
-                            >
-                            <label for="paymentScreenshot" class="file-upload-label">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <span class="file-text">Choose file or drag here</span>
-                                <span class="file-name"></span>
-                            </label>
-                        </div>
-                        <span class="form-hint">Upload payment proof (JPG, PNG, PDF - Max 5MB)</span>
-                    </div>
+    <div class="form-group">
+      <label>Upload Payment Screenshot</label>
+      <label class="file-btn">
+        Select Screenshot
+        <input type="file" id="screenshot" accept="image/*" required>
+      </label>
+    </div>
 
-                    <!-- Submit Button -->
-                    <div class="form-actions">
-                        <button type="submit" class="submit-button">
-                            <span class="button-text">Complete Registration</span>
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </form>
+    <button type="submit" class="submit-btn">Submit Registration</button>
+  </form>
+</section>
 
-                <!-- Success Message -->
-                <div id="successMessage" class="success-message">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Registration Successful!</h3>
-                    <p>Thank you for registering. We'll send you a confirmation email shortly.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-    <!-- Footer Section -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p class="branding">Branding by <span class="brand-name">Maviya</span></p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+const firebaseConfig = {
+  apiKey: "AIzaSyAjDdnn_0_K0iQkSCLd5RcgMrP-DOjrzzU",
+  authDomain: "map-tech2k26.firebaseapp.com",
+  projectId: "map-tech2k26"
+};
 
-    <!-- Scroll to Top Button -->
-    <button id="scrollToTop" class="scroll-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    <script src="script.js"></script>
+window.payNow = () => {
+  window.location.href="upi://pay?pa=meraj.pathan1@ibl&pn=MAPTECH2K26&am=60&cu=INR";
+};
+
+document.getElementById("regForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+
+  const institute = document.getElementById("institute").value;
+  const dept = document.getElementById("dept").value;
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const email = document.getElementById("email").value;
+  const screenshotInput = document.getElementById("screenshot");
+
+  if(!screenshotInput.files[0]){
+    alert("Please upload screenshot");
+    return;
+  }
+
+  const file = screenshotInput.files[0];
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", "maptech_preset");
+
+  const res = await fetch("https://api.cloudinary.com/v1_1/dgt4rfzqb/image/upload",{
+    method:"POST",
+    body:data
+  });
+
+  const result = await res.json();
+
+  await addDoc(collection(db,"registrations"),{
+    institute, dept, name, phone, email,
+    screenshot: result.secure_url
+  });
+
+  alert("Registration Successful 🎉");
+  regForm.reset();
+});
+</script>
+
 </body>
 </html>

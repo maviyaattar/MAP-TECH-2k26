@@ -496,6 +496,10 @@ let paymentCompleted = false;
 let paymentId = null;
 
 // Razorpay configuration
+// NOTE: This is a TEST API key for development/demo purposes only.
+// In production, payment verification should be handled server-side with signature validation.
+// The API key should be stored securely in environment variables and payment orders should be
+// created via a backend API endpoint to prevent client-side manipulation.
 const RAZORPAY_KEY = 'rzp_test_S9Luyj7D1mAl2g';
 
 // Show alert function
@@ -559,11 +563,13 @@ function validateAllFields() {
     errors.push("WhatsApp Number is required");
   } else if (!/^[0-9]{10}$/.test(phone)) {
     errors.push("WhatsApp Number must be 10 digits");
+  } else if (!/^[6-9][0-9]{9}$/.test(phone)) {
+    errors.push("WhatsApp Number must be a valid Indian mobile number");
   }
 
   if (!email) {
     errors.push("Email is required");
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
     errors.push("Email must be valid");
   }
 
@@ -614,8 +620,10 @@ window.initiatePayment = function() {
       statusDiv.style.color = '#155724';
       statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Payment Successful! Payment ID: ' + paymentId;
       
-      document.getElementById('payBtn').disabled = true;
-      document.getElementById('payBtn').style.opacity = '0.6';
+      const payBtn = document.getElementById('payBtn');
+      payBtn.disabled = true;
+      payBtn.style.opacity = '0.6';
+      payBtn.innerHTML = '<i class="fas fa-check-circle"></i> Payment Completed';
       
       showAlert("Payment completed successfully! You can now submit your registration.", "success");
     },
@@ -629,11 +637,20 @@ window.initiatePayment = function() {
   };
 
   try {
+    // Check if Razorpay SDK is loaded
+    if (typeof Razorpay === 'undefined') {
+      showAlert("Payment system is not available. Please refresh the page and try again.", "error");
+      return;
+    }
+    
     const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function(response) {
+      showAlert("Payment failed: " + (response.error.description || "Unknown error"), "error");
+    });
     rzp.open();
   } catch (error) {
     console.error('Razorpay error:', error);
-    showAlert("Error initializing payment. Please try again.", "error");
+    showAlert("Error initializing payment gateway. Please refresh the page and try again.", "error");
   }
 };
 
@@ -701,6 +718,9 @@ document.getElementById("regForm").addEventListener("submit", async e => {
   }
 
   // Check if payment is completed
+  // NOTE: In production, payment verification should be done server-side by verifying
+  // the payment signature with Razorpay's API to prevent client-side manipulation.
+  // This client-side check is only for user experience in the test environment.
   if (!paymentCompleted || !paymentId) {
     showAlert("Please complete the payment before submitting registration.", "error");
     return;

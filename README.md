@@ -71,6 +71,15 @@ Modify event options in `index.html` (Event Selection dropdown)
 - Font Awesome Icons
 - Google Fonts (Poppins, Orbitron)
 
+## Security Notes
+
+**Important**: This implementation uses a test Razorpay API key and client-side payment validation for demonstration purposes. For production use:
+
+1. **Server-Side Payment Verification**: Implement backend API endpoints to create Razorpay orders and verify payment signatures
+2. **API Key Protection**: Store Razorpay keys securely in environment variables on the server
+3. **Payment Validation**: Verify all payments server-side using Razorpay's signature verification before accepting registrations
+4. **HTTPS Required**: Always use HTTPS in production to protect sensitive data
+
 ## Browser Support
 
 - Chrome (latest)

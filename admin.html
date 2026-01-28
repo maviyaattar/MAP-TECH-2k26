@@ -40,9 +40,16 @@ body {
   height: 100%;
   background: rgba(255, 255, 255, 0.95);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+}
+
+.loader-content {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .loader {
@@ -64,6 +71,23 @@ body {
   font-size: 18px;
   color: var(--primary-color);
   font-weight: 600;
+}
+
+.loader-branding {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+  animation: fadeIn 1s ease-in;
+}
+
+.loader-branding i {
+  color: var(--secondary-color);
+  margin-right: 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .header {
@@ -352,8 +376,11 @@ body {
 
 <!-- Loading Overlay -->
 <div class="loader-overlay" id="loader">
-  <div class="loader"></div>
-  <div class="loader-text">Loading Registrations...</div>
+  <div class="loader-content">
+    <div class="loader"></div>
+    <div class="loader-text">Loading Registrations...</div>
+  </div>
+  <div class="loader-branding"><i class="fas fa-code"></i>Crafted by Maviya Attar</div>
 </div>
 
 <div class="header">
@@ -379,8 +406,10 @@ body {
   <select id="deptFilter">
     <option value="">All Departments</option>
     <option value="Computer Engineering">Computer Engineering</option>
-    <option value="Mechanical">Mechanical</option>
-    <option value="Electrical">Electrical</option>
+    <option value="Mechanical Engineering">Mechanical Engineering</option>
+    <option value="Electrical Engineering">Electrical Engineering</option>
+    <option value="Electronics & Telecommunication Engineering">Electronics & Telecommunication Engineering</option>
+    <option value="Other (Diploma Course)">Other (Diploma Course)</option>
   </select>
   <button onclick="applyFilters()"><i class="fas fa-filter"></i> Filter</button>
   <button onclick="exportData()"><i class="fas fa-download"></i> Export CSV</button>

@@ -171,6 +171,35 @@ body{background:#fff;color:#333;line-height:1.6;}
   opacity: 1;
 }
 
+/* Field Error Messages */
+.field-error {
+  display: none;
+  color: var(--error-color);
+  font-size: 13px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  background: #fee;
+  border-radius: 4px;
+  border-left: 3px solid var(--error-color);
+  animation: slideIn 0.3s ease-out;
+}
+
+.field-error.show {
+  display: block;
+}
+
+.form-group.has-error input,
+.form-group.has-error select {
+  border-color: var(--error-color);
+  background: #fff5f5;
+}
+
+.form-group.has-success input,
+.form-group.has-success select {
+  border-color: var(--success-color);
+  background: #f0fff4;
+}
+
 /* HERO */
 .hero{
   text-align:center;padding:50px 20px;
@@ -417,6 +446,7 @@ body{background:#fff;color:#333;line-height:1.6;}
     <div class="form-group">
       <label>Institute Name</label>
       <input type="text" id="institute" required>
+      <div class="field-error" id="institute-error"></div>
     </div>
 
     <div class="form-group">
@@ -428,21 +458,25 @@ body{background:#fff;color:#333;line-height:1.6;}
         <option>Electronics & Telecommunication Engineering</option>
         <option>Other (Diploma Course)</option>
       </select>
+      <div class="field-error" id="dept-error"></div>
     </div>
 
     <div class="form-group">
       <label>Full Name</label>
       <input type="text" id="name" required>
+      <div class="field-error" id="name-error"></div>
     </div>
 
     <div class="form-group">
       <label>WhatsApp Number</label>
       <input type="tel" id="phone" required>
+      <div class="field-error" id="phone-error"></div>
     </div>
 
     <div class="form-group">
       <label>Email</label>
       <input type="email" id="email" required>
+      <div class="field-error" id="email-error"></div>
     </div>
 
     <div class="form-group">
@@ -453,16 +487,13 @@ body{background:#fff;color:#333;line-height:1.6;}
         <option value="Poster Presentation">Poster Presentation</option>
         <option value="Technical Quiz">Technical Quiz</option>
       </select>
+      <div class="field-error" id="event-error"></div>
     </div>
 
     <h3 style="color:#0D47A1;">Payment ₹60</h3>
     
     <button type="button" class="pay-btn" id="payBtn" onclick="initiatePayment()">
       <i class="fas fa-credit-card"></i> Pay ₹60 via Razorpay
-    </button>
-    
-    <button type="button" class="pay-btn" id="testPayBtn" onclick="skipPaymentTestMode()" style="background: linear-gradient(135deg, #ff9800, #ff5722); margin-top: 10px;">
-      <i class="fas fa-flask"></i> Skip Payment (Test Mode)
     </button>
     
     <div id="paymentStatus" style="display: none; margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600;">
@@ -540,6 +571,38 @@ function toggleLoader(show) {
   }
 }
 
+// Clear field error
+function clearFieldError(fieldId) {
+  const errorDiv = document.getElementById(`${fieldId}-error`);
+  const formGroup = document.getElementById(fieldId).closest('.form-group');
+  
+  if (errorDiv) {
+    errorDiv.classList.remove('show');
+    errorDiv.textContent = '';
+  }
+  
+  if (formGroup) {
+    formGroup.classList.remove('has-error');
+    formGroup.classList.add('has-success');
+  }
+}
+
+// Show field error
+function showFieldError(fieldId, message) {
+  const errorDiv = document.getElementById(`${fieldId}-error`);
+  const formGroup = document.getElementById(fieldId).closest('.form-group');
+  
+  if (errorDiv) {
+    errorDiv.textContent = message;
+    errorDiv.classList.add('show');
+  }
+  
+  if (formGroup) {
+    formGroup.classList.add('has-error');
+    formGroup.classList.remove('has-success');
+  }
+}
+
 // Validate all required fields
 function validateAllFields() {
   const institute = document.getElementById("institute").value.trim();
@@ -549,48 +612,68 @@ function validateAllFields() {
   const email = document.getElementById("email").value.trim();
   const event = document.getElementById("event").value;
 
-  const errors = [];
+  let isValid = true;
 
+  // Clear all previous errors
+  ['institute', 'dept', 'name', 'phone', 'email', 'event'].forEach(fieldId => {
+    clearFieldError(fieldId);
+  });
+
+  // Validate Institute
   if (!institute) {
-    errors.push("Institute Name is required");
+    showFieldError('institute', 'Institute Name is required');
+    isValid = false;
   }
 
+  // Validate Department
   if (!dept) {
-    errors.push("Department is required");
+    showFieldError('dept', 'Department is required');
+    isValid = false;
   }
 
+  // Validate Name
   if (!name) {
-    errors.push("Full Name is required");
+    showFieldError('name', 'Full Name is required');
+    isValid = false;
   }
 
+  // Validate Phone
   if (!phone) {
-    errors.push("WhatsApp Number is required");
+    showFieldError('phone', 'WhatsApp Number is required');
+    isValid = false;
   } else if (!/^[0-9]{10}$/.test(phone)) {
-    errors.push("WhatsApp Number must be 10 digits");
+    showFieldError('phone', 'WhatsApp Number must be 10 digits');
+    isValid = false;
   } else if (!/^[6-9][0-9]{9}$/.test(phone)) {
-    errors.push("WhatsApp Number must be a valid Indian mobile number");
+    showFieldError('phone', 'WhatsApp Number must start with 6, 7, 8, or 9');
+    isValid = false;
   }
 
+  // Validate Email
   if (!email) {
-    errors.push("Email is required");
+    showFieldError('email', 'Email is required');
+    isValid = false;
   } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-    errors.push("Email must be valid");
+    showFieldError('email', 'Please enter a valid email address');
+    isValid = false;
   }
 
+  // Validate Event
   if (!event) {
-    errors.push("Please select an Event/Workshop");
+    showFieldError('event', 'Please select an Event/Workshop');
+    isValid = false;
   }
 
-  return errors;
+  return isValid;
 }
 
 // Initiate Razorpay payment
 window.initiatePayment = function() {
   // Validate all fields before payment
-  const errors = validateAllFields();
+  const isValid = validateAllFields();
   
-  if (errors.length > 0) {
-    showAlert("Please fill all required fields correctly:\n• " + errors.join("\n• "), "error");
+  if (!isValid) {
+    showAlert("Please fix all errors before proceeding to payment.", "error");
     return;
   }
 
@@ -658,38 +741,6 @@ window.initiatePayment = function() {
   }
 };
 
-// Skip payment in test mode
-window.skipPaymentTestMode = function() {
-  // Validate all fields before allowing test mode skip
-  const errors = validateAllFields();
-  
-  if (errors.length > 0) {
-    showAlert("Please fill all required fields correctly:\n• " + errors.join("\n• "), "error");
-    return;
-  }
-  
-  // Set test mode payment
-  paymentId = 'TEST_' + Date.now();
-  paymentCompleted = true;
-  
-  const statusDiv = document.getElementById('paymentStatus');
-  statusDiv.style.display = 'block';
-  statusDiv.style.background = '#fff3cd';
-  statusDiv.style.color = '#856404';
-  statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> TEST MODE: Payment Skipped! Payment ID: ' + paymentId;
-  
-  const payBtn = document.getElementById('payBtn');
-  payBtn.disabled = true;
-  payBtn.style.opacity = '0.6';
-  
-  const testPayBtn = document.getElementById('testPayBtn');
-  testPayBtn.disabled = true;
-  testPayBtn.style.opacity = '0.6';
-  testPayBtn.innerHTML = '<i class="fas fa-check-circle"></i> Test Mode Active';
-  
-  showAlert("Test mode activated! You can now submit the registration form for testing.", "warning");
-};
-
 // File preview function
 window.previewFile = function() {
   const fileInput = document.getElementById('screenshot');
@@ -746,10 +797,10 @@ document.getElementById("regForm").addEventListener("submit", async e => {
   e.preventDefault();
   
   // Validate all required fields first
-  const errors = validateAllFields();
+  const isValid = validateAllFields();
   
-  if (errors.length > 0) {
-    showAlert("Please fill all required fields correctly:\n• " + errors.join("\n• "), "error");
+  if (!isValid) {
+    showAlert("Please correct all errors in the form before submitting.", "error");
     return;
   }
 
@@ -782,7 +833,7 @@ document.getElementById("regForm").addEventListener("submit", async e => {
       institute, dept, name, phone, email, event,
       paymentId: paymentId,
       paymentAmount: 60,
-      paymentStatus: paymentId.startsWith('TEST_') ? 'test-mode' : 'completed',
+      paymentStatus: 'completed',
       timestamp: new Date().toISOString()
     });
 
@@ -803,6 +854,25 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     showAlert("Registration failed. Please try again.", "error");
     toggleLoader(false);
     document.getElementById('progressBar').classList.remove('active');
+  }
+});
+
+// Add real-time validation on blur
+['institute', 'dept', 'name', 'phone', 'email', 'event'].forEach(fieldId => {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    field.addEventListener('blur', function() {
+      validateAllFields();
+    });
+    
+    // Clear error on input
+    field.addEventListener('input', function() {
+      const errorDiv = document.getElementById(`${fieldId}-error`);
+      if (errorDiv && errorDiv.classList.contains('show')) {
+        // Re-validate just this field
+        setTimeout(() => validateAllFields(), 300);
+      }
+    });
   }
 });
 

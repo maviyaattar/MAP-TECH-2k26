@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 :root {
@@ -365,8 +366,8 @@ body {
           <li>Please bring a printed copy of this confirmation or show it on your mobile device</li>
           <li>Arrive at the venue 30 minutes before the event starts</li>
           <li>Carry a valid ID card from your institute</li>
-          <li>For any queries, contact us via WhatsApp or email</li>
-          <li>Check your email regularly for event updates</li>
+          <li>For any queries, contact us via WhatsApp</li>
+          <li>Save this confirmation ID for future reference</li>
         </ul>
       </div>
     </div>
@@ -375,6 +376,10 @@ body {
       <button class="btn btn-primary" onclick="window.print()">
         <i class="fas fa-print"></i>
         Print Confirmation
+      </button>
+      <button class="btn btn-primary" onclick="downloadConfirmation()">
+        <i class="fas fa-download"></i>
+        Download PDF
       </button>
       <a href="index.html" class="btn btn-secondary">
         <i class="fas fa-home"></i>
@@ -433,6 +438,7 @@ window.addEventListener('load', () => {
     participantInfo.appendChild(createInfoItem('Full Name', regData.name || 'N/A'));
     participantInfo.appendChild(createInfoItem('Institute', regData.institute || 'N/A'));
     participantInfo.appendChild(createInfoItem('Department', regData.dept || 'N/A'));
+    participantInfo.appendChild(createInfoItem('Event/Workshop', regData.event || 'N/A'));
     participantInfo.appendChild(createInfoItem('WhatsApp Number', regData.phone || 'N/A'));
     participantInfo.appendChild(createInfoItem('Email Address', regData.email || 'N/A'));
     participantInfo.appendChild(createInfoItem('Registration Date', new Date().toLocaleDateString()));
@@ -448,9 +454,20 @@ window.addEventListener('load', () => {
   }
 });
 
-// Download PDF function (placeholder)
-function downloadPDF() {
-  alert('PDF download functionality will be available soon. For now, please use the Print option and save as PDF.');
+// Download PDF function
+function downloadConfirmation() {
+  const element = document.querySelector('.container');
+  const confirmationId = document.getElementById('confirmationId').textContent;
+  
+  const opt = {
+    margin: 10,
+    filename: `MAP-TECH-2K26-Confirmation-${confirmationId}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  
+  html2pdf().set(opt).from(element).save();
 }
 </script>
 

@@ -34,14 +34,14 @@ body{background:#fff;color:#333;line-height:1.6;}
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.95);
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
-.loader-overlay.active {
-  display: flex;
+.loader-overlay.hidden {
+  display: none;
 }
 
 .loader {
@@ -420,6 +420,18 @@ body{background:#fff;color:#333;line-height:1.6;}
       <input type="email" id="email" required>
     </div>
 
+    <div class="form-group">
+      <label>Select Event/Workshop</label>
+      <select id="event" required>
+        <option value="">-- Choose Event --</option>
+        <option value="Web Development Workshop">Web Development Workshop</option>
+        <option value="AI/ML Seminar">AI/ML Seminar</option>
+        <option value="Robotics Competition">Robotics Competition</option>
+        <option value="Hackathon">Hackathon</option>
+        <option value="Tech Quiz">Tech Quiz</option>
+      </select>
+    </div>
+
     <h3 style="color:#0D47A1;">Payment ₹60</h3>
     <img src="Scanner.jpg" class="qr">
 
@@ -484,9 +496,9 @@ function showAlert(message, type = 'info') {
 function toggleLoader(show) {
   const loader = document.getElementById('loader');
   if (show) {
-    loader.classList.add('active');
+    loader.classList.remove('hidden');
   } else {
-    loader.classList.remove('active');
+    loader.classList.add('hidden');
   }
 }
 
@@ -558,7 +570,14 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
+    const event = document.getElementById("event").value;
     const screenshotInput = document.getElementById("screenshot");
+
+    if(!event){
+      showAlert("Please select an event/workshop", "error");
+      toggleLoader(false);
+      return;
+    }
 
     if(!screenshotInput.files[0]){
       showAlert("Please upload payment screenshot", "error");
@@ -597,7 +616,7 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     progressFill.style.width = '80%';
 
     await addDoc(collection(db,"registrations"),{
-      institute, dept, name, phone, email,
+      institute, dept, name, phone, email, event,
       screenshot: result.secure_url,
       timestamp: new Date().toISOString()
     });
@@ -606,7 +625,7 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     
     // Store data in sessionStorage for confirmation page
     sessionStorage.setItem('registrationData', JSON.stringify({
-      institute, dept, name, phone, email
+      institute, dept, name, phone, email, event
     }));
     
     setTimeout(() => {
@@ -622,9 +641,11 @@ document.getElementById("regForm").addEventListener("submit", async e => {
   }
 });
 
-// Page load animation
+// Page load animation - hide loader after page loads
 window.addEventListener('load', () => {
-  toggleLoader(false);
+  setTimeout(() => {
+    toggleLoader(false);
+  }, 800); // Show loader for at least 800ms
 });
 </script>
 

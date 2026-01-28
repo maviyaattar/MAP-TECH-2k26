@@ -248,7 +248,7 @@ h1 {
   <div class="message-box">
     <p>
       <i class="fas fa-info-circle"></i>
-      Your registration is being processed. You will receive a confirmation email shortly with further details about the event.
+      Your registration has been recorded successfully. Please save your confirmation details for future reference.
     </p>
   </div>
   
@@ -312,11 +312,12 @@ window.addEventListener('load', () => {
     detailsSection.appendChild(createDetailItem('Name', regData.name || 'N/A'));
     detailsSection.appendChild(createDetailItem('WhatsApp', regData.phone || 'N/A'));
     detailsSection.appendChild(createDetailItem('Email', regData.email || 'N/A'));
+    detailsSection.appendChild(createDetailItem('Event', regData.event || 'N/A'));
   } else {
     const p = document.createElement('p');
     p.style.textAlign = 'center';
     p.style.color = '#666';
-    p.textContent = 'Registration details not available. Please check your email for confirmation.';
+    p.textContent = 'Registration details not available. Please refer to your confirmation page.';
     detailsSection.innerHTML = '';
     detailsSection.appendChild(p);
   }

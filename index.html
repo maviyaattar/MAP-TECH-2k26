@@ -505,9 +505,12 @@ body{background:#fff;color:#333;line-height:1.6;}
       <p style="font-weight: 600; color: var(--primary-color); margin-bottom: 10px;">
         <i class="fas fa-qrcode"></i> Scan to Pay ₹60
       </p>
-      <img src="logo.jpg" class="qr" alt="Payment QR Code">
+      <img src="logo.jpg" class="qr" alt="QR Code for UPI payment of ₹60 registration fee to MAP-TECH 2K26">
       <p style="margin-top: 10px; font-size: 14px; color: #666;">
         Or use this UPI ID: <strong style="color: var(--primary-color);">maptech2k26@upi</strong>
+      </p>
+      <p style="margin-top: 5px; font-size: 12px; color: #f44336; font-weight: 600;">
+        ⚠️ Note: Replace this QR code with actual payment QR code before production use
       </p>
       <a href="upi://pay?pa=maptech2k26@upi&pn=MAP-TECH%202K26&am=60&cu=INR" 
          class="pay-btn" 
@@ -710,17 +713,19 @@ window.previewFile = function() {
   if (fileInput.files && fileInput.files[0]) {
     const file = fileInput.files[0];
     
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-    if (file.size > maxSize) {
-      showAlert('File size too large. Please select a file smaller than 5MB.', 'error');
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      showFieldError('screenshot', 'Please upload an image file.');
+      showAlert('Please upload an image file.', 'error');
       fileInput.value = '';
       return;
     }
     
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      showAlert('Please upload an image file.', 'error');
+    // Validate file size (max 500KB to avoid Firestore document size limit)
+    const maxSize = 500 * 1024; // 500KB in bytes
+    if (file.size > maxSize) {
+      showFieldError('screenshot', 'File size too large. Please select a file smaller than 500KB.');
+      showAlert('File size too large. Please select a file smaller than 500KB.', 'error');
       fileInput.value = '';
       return;
     }
@@ -733,9 +738,11 @@ window.previewFile = function() {
       filePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
       clearFieldError('screenshot');
     };
-    reader.onerror = function() {
+    reader.onerror = function(error) {
+      console.error('FileReader error:', error);
       showAlert('Error reading file. Please try again.', 'error');
       filePreview.innerHTML = '';
+      fileInput.value = '';
     };
     reader.readAsDataURL(file);
   }
@@ -823,26 +830,31 @@ document.getElementById("regForm").addEventListener("submit", async e => {
           window.location.href = 'thankyou.html';
         }, 500);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Database error:', error);
         showAlert("Registration failed. Please try again.", "error");
         toggleLoader(false);
-        document.getElementById('progressBar').classList.remove('active');
+        progressBar.classList.remove('active');
+        progressFill.style.width = '0%';
       }
     };
     
-    reader.onerror = function() {
+    reader.onerror = function(error) {
+      console.error('FileReader error:', error);
       showAlert("Error processing screenshot. Please try again.", "error");
       toggleLoader(false);
-      document.getElementById('progressBar').classList.remove('active');
+      progressBar.classList.remove('active');
+      progressFill.style.width = '0%';
     };
     
     reader.readAsDataURL(paymentScreenshot);
     
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Submission error:', error);
     showAlert("Registration failed. Please try again.", "error");
     toggleLoader(false);
-    document.getElementById('progressBar').classList.remove('active');
+    const progressBar = document.getElementById('progressBar');
+    progressBar.classList.remove('active');
+    document.getElementById('progressFill').style.width = '0%';
   }
 });
 

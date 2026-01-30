@@ -43,7 +43,7 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
    - Complete the payment in your UPI app
 4. Upload a screenshot of the completed payment transaction
    - Screenshot must be clear and show transaction details
-   - File size limit: 5MB
+   - File size limit: 500KB (images will be automatically validated)
 5. Submit the registration form for verification
 6. Wait for admin verification (within 24 hours)
 7. Receive confirmation message on WhatsApp after admin verifies your payment
@@ -97,11 +97,14 @@ Modify event options in `index.html` (Event Selection dropdown)
 This implementation uses a manual verification workflow:
 
 1. **User Payment**: Users scan QR code or use direct UPI link to pay ₹60
-2. **Screenshot Upload**: Users upload screenshot of completed payment
+2. **Screenshot Upload**: Users upload screenshot of completed payment (max 500KB)
 3. **Admin Verification**: Admin manually verifies each payment screenshot
 4. **WhatsApp Confirmation**: Users receive confirmation on WhatsApp after verification
 
-**Note**: Replace the QR code image and UPI ID with actual payment details for production use.
+**Important Setup Notes**:
+- ⚠️ **Replace QR Code**: The current QR code is a placeholder (logo.jpg). Replace it with an actual UPI payment QR code image before production use.
+- ⚠️ **Update UPI ID**: Change the UPI ID from `maptech2k26@upi` to your actual UPI ID in index.html.
+- ⚠️ **File Size Limit**: Screenshot uploads are limited to 500KB to stay within Firestore document size limits.
 
 ## Browser Support
 

@@ -1288,9 +1288,12 @@ window.addEventListener('load', () => {
     toggleLoader(false);
   }, 800); // Show loader for at least 800ms
 });
+</script>
 
-// Guide tab switching function (defined in global scope)
-window.showGuideTab = function(tabName) {
+<!-- Guide tab switching function (separate from module) -->
+<script>
+// Guide tab switching function
+function showGuideTab(tabName) {
   // Hide all content
   document.querySelectorAll('.guide-content').forEach(content => {
     content.classList.remove('active');
@@ -1314,7 +1317,7 @@ window.showGuideTab = function(tabName) {
       tab.classList.add('active');
     }
   });
-};
+}
 </script>
 
 </body>

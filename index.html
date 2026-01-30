@@ -201,11 +201,29 @@ body{background:#fff;color:#333;line-height:1.6;}
 
 /* HERO */
 .hero{
-  text-align:center;padding:50px 20px;
-  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  text-align:center;padding:60px 20px;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   border-bottom:5px solid var(--primary-color);
   color: white;
   animation: fadeIn 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn {
@@ -214,11 +232,15 @@ body{background:#fff;color:#333;line-height:1.6;}
 }
 
 .hero img{
-  width:90px;
-  margin-bottom:10px;
+  width:100px;
+  height:100px;
+  margin-bottom:15px;
   border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
   animation: bounce 2s ease-in-out infinite;
+  border: 4px solid rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes bounce {
@@ -227,24 +249,32 @@ body{background:#fff;color:#333;line-height:1.6;}
 }
 
 .hero h1{
-  font-size:42px;
+  font-size:48px;
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  margin-bottom: 10px;
+  letter-spacing: 3px;
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero p{
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
 }
 
 /* FORM */
 .form-section{
-  max-width:650px;margin:25px auto;padding:25px;background:#fff;
-  border-radius:18px;box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  max-width:650px;margin:30px auto;padding:30px;background:#fff;
+  border-radius:20px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.12), 0 5px 15px rgba(0,0,0,0.08);
   animation: slideUp 0.6s ease-out;
+  border: 1px solid rgba(102, 126, 234, 0.1);
 }
 
 @keyframes slideUp {
@@ -267,19 +297,27 @@ body{background:#fff;color:#333;line-height:1.6;}
   font-weight:600;
   color: var(--primary-color);
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 15px;
 }
 
 .form-group input,.form-group select{
-  width:100%;padding:11px;margin-top:6px;border:2px solid #e0e0e0;border-radius:8px;
+  width:100%;
+  padding:13px 15px;
+  margin-top:6px;
+  border:2px solid #e0e0e0;
+  border-radius:10px;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  background: #fafbfc;
 }
 
 .form-group input:focus,.form-group select:focus{
   outline: none;
   border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.1);
+  background: white;
 }
 
 /* QR */
@@ -381,6 +419,70 @@ body{background:#fff;color:#333;line-height:1.6;}
   box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
 }
 
+/* Payment Options Container */
+.payment-options {
+  display: flex;
+  gap: 15px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+
+.payment-btn {
+  flex: 1;
+  min-width: 150px;
+  padding: 15px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.payment-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  border-color: var(--secondary-color);
+}
+
+.payment-btn.phonepe {
+  border-color: #5f259f;
+}
+
+.payment-btn.phonepe:hover {
+  background: #f8f4fc;
+  border-color: #5f259f;
+  box-shadow: 0 6px 20px rgba(95, 37, 159, 0.2);
+}
+
+.payment-btn.paytm {
+  border-color: #00baf2;
+}
+
+.payment-btn.paytm:hover {
+  background: #f0faff;
+  border-color: #00baf2;
+  box-shadow: 0 6px 20px rgba(0, 186, 242, 0.2);
+}
+
+.payment-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.payment-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+}
+
 .submit-btn{
   background:linear-gradient(135deg, #333, #555);
   color:white;
@@ -413,10 +515,146 @@ body{background:#fff;color:#333;line-height:1.6;}
   }
 }
 
+/* Guide Section */
+.guide-section {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  animation: slideUp 0.6s ease-out;
+}
+
+.guide-section h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.guide-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.guide-tab {
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.guide-tab.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.guide-tab:hover {
+  color: var(--secondary-color);
+}
+
+.guide-content {
+  display: none;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.guide-content.active {
+  display: block;
+}
+
+.guide-step {
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid var(--secondary-color);
+}
+
+.guide-step h4 {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.guide-step h4 i {
+  color: var(--secondary-color);
+}
+
+.guide-step p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.guide-step ul {
+  margin-left: 20px;
+  color: #555;
+}
+
+.guide-step ul li {
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+/* WhatsApp Notice */
+.whatsapp-notice {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #dcf8c6, #b3e8a6);
+  border-radius: 15px;
+  border-left: 5px solid #25d366;
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2);
+  animation: slideUp 0.6s ease-out;
+}
+
+.whatsapp-notice h3 {
+  color: #075e54;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.whatsapp-notice h3 i {
+  color: #25d366;
+  font-size: 24px;
+}
+
+.whatsapp-notice p {
+  color: #075e54;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.whatsapp-notice strong {
+  color: #064e3b;
+  font-weight: 600;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero h1 { font-size: 32px; }
   .form-section { margin: 15px; padding: 20px; }
+  .guide-section { margin: 15px; padding: 20px; }
+  .whatsapp-notice { margin: 15px; padding: 15px; }
+  .guide-tabs { flex-direction: column; }
+  .guide-tab { border-bottom: none; border-left: 3px solid transparent; }
+  .guide-tab.active { border-left-color: var(--primary-color); }
+  .payment-options { flex-direction: column; }
+  .payment-btn { min-width: 100%; }
 }
 </style>
 </head>
@@ -492,14 +730,29 @@ body{background:#fff;color:#333;line-height:1.6;}
     <h3 style="color:#0D47A1;">Payment ₹60</h3>
     
     <p style="text-align:center; margin: 15px 0; color:#666; font-size:14px;">
-      Scan the QR code below or click the button to pay via UPI
+      Scan the QR code below or choose your preferred payment app
     </p>
     
-    <img src="scanner.jpg" alt="Payment QR Code" class="qr" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<p style=&quot;text-align:center; color:#f44336; margin:10px 0;&quot;>QR Code image not available. Please use the UPI link below.</p>')">
+    <img src="scanner.jpg" alt="Payment QR Code" class="qr" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<p style=&quot;text-align:center; color:#f44336; margin:10px 0;&quot;>QR Code image not available. Please use the payment buttons below.</p>')">
     
-    <a href="upi://pay?pa=9765993135@ptaxis&pn=MAPTECH2K26&am=60&cu=INR&tn=MAPTECH%202K26" class="pay-btn" style="display:block; text-decoration:none; text-align:center;">
-      <i class="fas fa-mobile-alt"></i> Pay ₹60 via UPI
-    </a>
+    <div class="payment-options">
+      <a href="intent://pay?pa=9765993135@ptaxis&pn=MAPTECH2K26&am=60&cu=INR&tn=MAPTECH%202K26#Intent;scheme=upi;package=com.phonepe.app;end" class="payment-btn phonepe">
+        <svg class="payment-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="95" fill="#5f259f"/>
+          <text x="100" y="90" font-size="60" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial, sans-serif">P</text>
+          <text x="100" y="130" font-size="24" font-weight="600" fill="white" text-anchor="middle" font-family="Arial, sans-serif">PhonePe</text>
+        </svg>
+        <span class="payment-name">Pay with PhonePe</span>
+      </a>
+      
+      <a href="intent://pay?pa=9765993135@ptaxis&pn=MAPTECH2K26&am=60&cu=INR&tn=MAPTECH%202K26#Intent;scheme=upi;package=net.one97.paytm;end" class="payment-btn paytm">
+        <svg class="payment-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="95" fill="#00baf2"/>
+          <text x="100" y="115" font-size="80" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial, sans-serif">₹</text>
+        </svg>
+        <span class="payment-name">Pay with Paytm</span>
+      </a>
+    </div>
 
     <h3 style="color:#0D47A1; margin-top:25px;">Upload Payment Proof</h3>
     <p style="margin: 10px 0; color:#666; font-size:13px;">
@@ -520,6 +773,165 @@ body{background:#fff;color:#333;line-height:1.6;}
 
     <button type="submit" class="submit-btn">Submit Registration</button>
   </form>
+</section>
+
+<!-- WhatsApp Notice -->
+<section class="whatsapp-notice">
+  <h3><i class="fab fa-whatsapp"></i> Important WhatsApp Information</h3>
+  <p>
+    <strong>Please Note:</strong> After submitting your registration, you may contact our teachers via WhatsApp for any queries regarding the event.
+  </p>
+  <p>
+    <i class="fas fa-clock"></i> <strong>Response Time:</strong> Please allow up to 24-48 hours for teachers to respond to your WhatsApp messages. Our faculty reviews all queries carefully and will get back to you as soon as possible.
+  </p>
+  <p>
+    <i class="fas fa-info-circle"></i> For urgent inquiries during event hours, please call the event helpline mentioned in your confirmation email.
+  </p>
+</section>
+
+<!-- User Guide Section -->
+<section class="guide-section">
+  <h2><i class="fas fa-book"></i> User Guide & Instructions</h2>
+  
+  <div class="guide-tabs">
+    <button class="guide-tab active" onclick="showGuideTab('registration')">Registration Process</button>
+    <button class="guide-tab" onclick="showGuideTab('payment')">Payment Guide</button>
+    <button class="guide-tab" onclick="showGuideTab('faq')">FAQs</button>
+  </div>
+  
+  <div class="guide-content active" id="guide-registration">
+    <div class="guide-step">
+      <h4><i class="fas fa-1"></i> Step 1: Fill Registration Form</h4>
+      <p>Complete all required fields in the registration form:</p>
+      <ul>
+        <li><strong>Institute Name:</strong> Enter your institution's full name (no numbers allowed)</li>
+        <li><strong>Department:</strong> Select your department from the dropdown</li>
+        <li><strong>Full Name:</strong> Enter your complete name with first and last name (no numbers allowed, minimum 8 characters)</li>
+        <li><strong>WhatsApp Number:</strong> Provide a valid 10-digit WhatsApp number starting with 6-9</li>
+        <li><strong>Email:</strong> Enter a valid email address</li>
+        <li><strong>Event/Workshop:</strong> Choose the event you want to participate in</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-2"></i> Step 2: Make Payment</h4>
+      <p>Complete the registration fee payment of ₹60 using either method:</p>
+      <ul>
+        <li>Scan the QR code with any UPI app</li>
+        <li>Click on PhonePe or Paytm button to pay directly through the app</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-3"></i> Step 3: Upload Payment Proof</h4>
+      <p>After successful payment:</p>
+      <ul>
+        <li>Take a screenshot of your payment confirmation</li>
+        <li>Click "Click to Upload Payment Proof" button</li>
+        <li>Select the screenshot from your device</li>
+        <li>Wait for the preview to appear confirming your upload</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-4"></i> Step 4: Submit & Confirm</h4>
+      <p>Once all fields are filled and payment proof is uploaded:</p>
+      <ul>
+        <li>Click "Submit Registration" button</li>
+        <li>Wait for the upload process to complete</li>
+        <li>You'll be redirected to a thank you page</li>
+        <li>Save your confirmation ID for future reference</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="guide-content" id="guide-payment">
+    <div class="guide-step">
+      <h4><i class="fas fa-mobile-alt"></i> PhonePe Payment</h4>
+      <p>To pay using PhonePe:</p>
+      <ul>
+        <li>Click the "Pay with PhonePe" button</li>
+        <li>Your PhonePe app will open automatically</li>
+        <li>Verify the payment details (Amount: ₹60, Recipient: MAPTECH2K26)</li>
+        <li>Complete the payment using your preferred method</li>
+        <li>Take a screenshot of the payment confirmation</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-wallet"></i> Paytm Payment</h4>
+      <p>To pay using Paytm:</p>
+      <ul>
+        <li>Click the "Pay with Paytm" button</li>
+        <li>Your Paytm app will open automatically</li>
+        <li>Verify the payment details (Amount: ₹60, Recipient: MAPTECH2K26)</li>
+        <li>Complete the payment using your Paytm wallet or UPI</li>
+        <li>Take a screenshot of the payment confirmation</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-qrcode"></i> QR Code Payment</h4>
+      <p>To pay by scanning QR code:</p>
+      <ul>
+        <li>Open any UPI app (Google Pay, PhonePe, Paytm, etc.)</li>
+        <li>Select "Scan QR Code" option</li>
+        <li>Scan the QR code displayed on the page</li>
+        <li>Verify amount is ₹60</li>
+        <li>Complete the payment</li>
+        <li>Take a screenshot of the payment confirmation</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-exclamation-triangle"></i> Payment Tips</h4>
+      <ul>
+        <li>Ensure you have sufficient balance before initiating payment</li>
+        <li>Double-check the recipient details before confirming payment</li>
+        <li>Keep your payment screenshot safe - you'll need it for upload</li>
+        <li>Payment verification may take 24-48 hours</li>
+        <li>Do not share your payment screenshot publicly</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="guide-content" id="guide-faq">
+    <div class="guide-step">
+      <h4><i class="fas fa-question-circle"></i> What if I don't have PhonePe or Paytm?</h4>
+      <p>You can use any UPI app to scan the QR code displayed on the page. All UPI apps (Google Pay, BHIM, etc.) will work with the QR code.</p>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-question-circle"></i> What payment proof should I upload?</h4>
+      <p>Upload a clear screenshot of your payment confirmation that shows:</p>
+      <ul>
+        <li>Transaction ID or reference number</li>
+        <li>Payment amount (₹60)</li>
+        <li>Recipient name (MAPTECH2K26)</li>
+        <li>Date and time of transaction</li>
+      </ul>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-question-circle"></i> Can I edit my registration after submission?</h4>
+      <p>No, registration details cannot be edited after submission. Please ensure all information is correct before submitting. For any corrections, contact us via WhatsApp.</p>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-question-circle"></i> How long does payment verification take?</h4>
+      <p>Payment verification is done manually by our admin team and typically takes 24-48 hours. You'll receive a WhatsApp confirmation once verified.</p>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-question-circle"></i> When will I get a response to my WhatsApp query?</h4>
+      <p>Our teachers review and respond to WhatsApp queries within 24-48 hours. Please be patient and avoid sending multiple messages for the same query.</p>
+    </div>
+    
+    <div class="guide-step">
+      <h4><i class="fas fa-question-circle"></i> What if my payment is deducted but registration fails?</h4>
+      <p>In rare cases of payment success but registration failure, your payment proof will be saved. Contact us immediately via WhatsApp with your transaction details.</p>
+    </div>
+  </div>
 </section>
 
 <footer style="text-align: center; padding: 20px; background: #f5f5f5; color: #666; font-size: 14px;">
@@ -635,6 +1047,9 @@ function validateAllFields() {
   if (!institute) {
     showFieldError('institute', 'Institute Name is required');
     isValid = false;
+  } else if (/\d/.test(institute)) {
+    showFieldError('institute', 'Institute Name cannot contain numbers');
+    isValid = false;
   }
 
   // Validate Department
@@ -646,6 +1061,9 @@ function validateAllFields() {
   // Validate Name
   if (!name) {
     showFieldError('name', 'Full Name is required');
+    isValid = false;
+  } else if (/\d/.test(name)) {
+    showFieldError('name', 'Full Name cannot contain numbers');
     isValid = false;
   } else if (name.length < 8) {
     showFieldError('name', 'Full Name must be at least 8 characters long');
@@ -746,7 +1164,7 @@ async function uploadToCloudinary(file) {
 }
 
 // Add ripple effect to buttons
-document.querySelectorAll('.pay-btn, .submit-btn').forEach(button => {
+document.querySelectorAll('.submit-btn').forEach(button => {
   button.addEventListener('click', function(e) {
     const ripple = document.createElement('span');
     ripple.classList.add('ripple');
@@ -870,6 +1288,36 @@ window.addEventListener('load', () => {
     toggleLoader(false);
   }, 800); // Show loader for at least 800ms
 });
+</script>
+
+<!-- Guide tab switching function (separate from module) -->
+<script>
+// Guide tab switching function
+function showGuideTab(tabName) {
+  // Hide all content
+  document.querySelectorAll('.guide-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  
+  // Remove active class from all tabs
+  document.querySelectorAll('.guide-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  // Show selected content and activate tab
+  const selectedContent = document.getElementById(`guide-${tabName}`);
+  if (selectedContent) {
+    selectedContent.classList.add('active');
+  }
+  
+  // Find and activate the clicked tab
+  const tabs = document.querySelectorAll('.guide-tab');
+  tabs.forEach(tab => {
+    if (tab.textContent.toLowerCase().includes(tabName === 'registration' ? 'registration' : tabName === 'payment' ? 'payment' : 'faq')) {
+      tab.classList.add('active');
+    }
+  });
+}
 </script>
 
 </body>

@@ -509,7 +509,7 @@ function displayRegistrations() {
             <div>
               <div class="field-label">Payment Screenshot</div>
               <div class="field-value">
-                ${reg.paymentScreenshot ? '<button class="card-btn btn-view" onclick="viewScreenshot(\'' + reg.id + '\')">View Screenshot</button>' : 'Not uploaded'}
+                ${(reg.paymentScreenshot || reg.paymentScreenshotUrl) ? '<button class="card-btn btn-view" onclick="viewScreenshot(\'' + reg.id + '\')">View Screenshot</button>' : 'Not uploaded'}
               </div>
             </div>
           </div>
@@ -634,7 +634,9 @@ window.exportData = function() {
 // View payment screenshot
 window.viewScreenshot = function(registrationId) {
   const reg = allRegistrations.find(r => r.id === registrationId);
-  if (reg && reg.paymentScreenshot) {
+  const screenshotSrc = reg.paymentScreenshotUrl || reg.paymentScreenshot;
+  
+  if (reg && screenshotSrc) {
     // Create modal to display screenshot
     const modal = document.createElement('div');
     modal.style.cssText = `
@@ -680,7 +682,7 @@ window.viewScreenshot = function(registrationId) {
     closeBtn.onclick = () => modal.remove();
     
     const img = document.createElement('img');
-    img.src = reg.paymentScreenshot;
+    img.src = screenshotSrc;
     img.style.cssText = `
       width: 100%;
       height: auto;
@@ -701,7 +703,8 @@ window.viewScreenshot = function(registrationId) {
       <strong>Registration Details:</strong><br>
       Name: ${reg.name}<br>
       Phone: ${reg.phone}<br>
-      Amount: ₹${reg.paymentAmount || '60'}
+      Amount: ₹${reg.paymentAmount || '60'}<br>
+      ${reg.paymentScreenshotUrl ? 'Image hosted on Cloudinary' : 'Legacy base64 image'}
     `;
     
     content.appendChild(closeBtn);

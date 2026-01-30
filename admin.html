@@ -347,6 +347,14 @@ body {
       <div class="stat-number" id="totalCount">0</div>
       <div class="stat-label">Total Registrations</div>
     </div>
+    <div class="stat-item" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
+      <div class="stat-number" id="pendingCount">0</div>
+      <div class="stat-label">Pending Verification</div>
+    </div>
+    <div class="stat-item" style="background: linear-gradient(135deg, #4CAF50, #66BB6A);">
+      <div class="stat-number" id="verifiedCount">0</div>
+      <div class="stat-label">Verified</div>
+    </div>
   </div>
 </div>
 
@@ -378,7 +386,7 @@ body {
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjDdnn_0_K0iQkSCLd5RcgMrP-DOjrzzU",
@@ -497,26 +505,56 @@ function displayRegistrations() {
           </div>
           
           <div class="card-field">
-            <i class="fas fa-credit-card"></i>
+            <i class="fas fa-image"></i>
             <div>
-              <div class="field-label">Payment ID</div>
-              <div class="field-value">${reg.paymentId || 'N/A'}</div>
+              <div class="field-label">Payment Screenshot</div>
+              <div class="field-value">
+                ${reg.paymentScreenshot ? '<button class="card-btn btn-view" onclick="viewScreenshot(\'' + reg.id + '\')">View Screenshot</button>' : 'Not uploaded'}
+              </div>
             </div>
           </div>
           
           <div class="card-field">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-hourglass-half"></i>
+            <div>
+              <div class="field-label">Verification Status</div>
+              <div class="field-value">
+                <span style="padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; ${
+                  reg.verificationStatus === 'verified' ? 'background: #d4edda; color: #155724;' :
+                  reg.verificationStatus === 'rejected' ? 'background: #f8d7da; color: #721c24;' :
+                  'background: #fff3cd; color: #856404;'
+                }">
+                  ${reg.verificationStatus === 'verified' ? '✓ Verified' : 
+                    reg.verificationStatus === 'rejected' ? '✗ Rejected' : 
+                    '⏳ Pending'}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-field">
+            <i class="fas fa-credit-card"></i>
             <div>
               <div class="field-label">Payment Status</div>
-              <div class="field-value">${reg.paymentStatus || 'N/A'}</div>
+              <div class="field-value">${reg.paymentStatus || 'pending_verification'}</div>
             </div>
           </div>
         </div>
         
         <div class="card-footer">
-          <div style="color: #4CAF50; font-weight: 600; text-align: center; padding: 10px;">
-            <i class="fas fa-rupee-sign"></i> ₹${reg.paymentAmount || '60'} - ${reg.paymentStatus || 'Completed'}
-          </div>
+          ${reg.verificationStatus === 'pending' ? `
+            <button class="card-btn" style="background: #4CAF50; color: white;" onclick="updateVerificationStatus('${reg.id}', 'verified')">
+              <i class="fas fa-check"></i> Verify
+            </button>
+            <button class="card-btn" style="background: #f44336; color: white;" onclick="updateVerificationStatus('${reg.id}', 'rejected')">
+              <i class="fas fa-times"></i> Reject
+            </button>
+          ` : `
+            <div style="color: ${reg.verificationStatus === 'verified' ? '#4CAF50' : '#f44336'}; font-weight: 600; text-align: center; padding: 10px;">
+              <i class="fas fa-${reg.verificationStatus === 'verified' ? 'check-circle' : 'times-circle'}"></i> 
+              ${reg.verificationStatus === 'verified' ? 'Verified' : 'Rejected'}
+            </div>
+          `}
         </div>
       </div>
     `;
@@ -526,6 +564,16 @@ function displayRegistrations() {
 // Update statistics
 function updateStats() {
   document.getElementById('totalCount').textContent = allRegistrations.length;
+  
+  const pendingCount = allRegistrations.filter(reg => 
+    reg.verificationStatus === 'pending' || !reg.verificationStatus
+  ).length;
+  document.getElementById('pendingCount').textContent = pendingCount;
+  
+  const verifiedCount = allRegistrations.filter(reg => 
+    reg.verificationStatus === 'verified'
+  ).length;
+  document.getElementById('verifiedCount').textContent = verifiedCount;
 }
 
 // Apply filters
@@ -556,7 +604,7 @@ window.exportData = function() {
     return;
   }
   
-  const headers = ['Name', 'Institute', 'Department', 'Event', 'Phone', 'Email', 'Payment ID', 'Payment Status', 'Registration Date'];
+  const headers = ['Name', 'Institute', 'Department', 'Event', 'Phone', 'Email', 'Verification Status', 'Payment Status', 'Registration Date'];
   const rows = filteredRegistrations.map(reg => [
     reg.name || '',
     reg.institute || '',
@@ -564,8 +612,8 @@ window.exportData = function() {
     reg.event || '',
     reg.phone || '',
     reg.email || '',
-    reg.paymentId || '',
-    reg.paymentStatus || '',
+    reg.verificationStatus || 'pending',
+    reg.paymentStatus || 'pending_verification',
     reg.timestamp ? new Date(reg.timestamp).toLocaleString() : ''
   ]);
   
@@ -581,6 +629,123 @@ window.exportData = function() {
   a.download = `MAP-TECH-2K26-Registrations-${new Date().toISOString().split('T')[0]}.csv`;
   a.click();
   window.URL.revokeObjectURL(url);
+};
+
+// View payment screenshot
+window.viewScreenshot = function(registrationId) {
+  const reg = allRegistrations.find(r => r.id === registrationId);
+  if (reg && reg.paymentScreenshot) {
+    // Create modal to display screenshot
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      padding: 20px;
+    `;
+    
+    const content = document.createElement('div');
+    content.style.cssText = `
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      overflow: auto;
+    `;
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ Close';
+    closeBtn.style.cssText = `
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      z-index: 1;
+    `;
+    closeBtn.onclick = () => modal.remove();
+    
+    const img = document.createElement('img');
+    img.src = reg.paymentScreenshot;
+    img.style.cssText = `
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
+      display: block;
+      margin-top: 40px;
+    `;
+    
+    const info = document.createElement('div');
+    info.style.cssText = `
+      margin-top: 15px;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    `;
+    info.innerHTML = `
+      <strong>Registration Details:</strong><br>
+      Name: ${reg.name}<br>
+      Phone: ${reg.phone}<br>
+      Amount: ₹${reg.paymentAmount || '60'}
+    `;
+    
+    content.appendChild(closeBtn);
+    content.appendChild(img);
+    content.appendChild(info);
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    
+    // Close on background click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.remove();
+      }
+    });
+  } else {
+    alert('Screenshot not available');
+  }
+};
+
+// Update verification status
+window.updateVerificationStatus = async function(registrationId, status) {
+  if (!confirm(`Are you sure you want to ${status} this registration?`)) {
+    return;
+  }
+  
+  const loader = document.getElementById('loader');
+  loader.style.display = 'flex';
+  
+  try {
+    const docRef = doc(db, 'registrations', registrationId);
+    await updateDoc(docRef, {
+      verificationStatus: status,
+      paymentStatus: status === 'verified' ? 'verified' : 'rejected',
+      verifiedAt: new Date().toISOString()
+    });
+    
+    alert(`Registration ${status} successfully!`);
+    loadRegistrations();
+  } catch (error) {
+    console.error('Error updating verification status:', error);
+    alert('Failed to update verification status. Please try again.');
+  } finally {
+    loader.style.display = 'none';
+  }
 };
 
 // Real-time search

@@ -7,7 +7,10 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
 - **Modern Design**: Implements glassmorphism, neumorphism, and gradient UI concepts
 - **Responsive Layout**: Optimized for both desktop and mobile devices
 - **Interactive Form**: Real-time validation with smooth animations and inline error messages
-- **Razorpay Integration**: Secure online payment processing via Razorpay gateway
+- **UPI Payment Integration**: Direct UPI payment link with QR code scanner for ₹60 registration fee
+- **Screenshot Upload**: Users upload payment screenshot for manual verification
+- **Manual Verification Process**: Admin manually verifies payment screenshots before approval
+- **WhatsApp Confirmation**: Users receive confirmation messages on WhatsApp after admin verification
 - **Inline Field Validation**: Error messages appear directly below each field for better UX
 - **Visual Feedback**: Color-coded fields (red for errors, green for valid inputs)
 - **Robust Validation**: All fields are mandatory with comprehensive validation
@@ -18,11 +21,11 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
 
 ## Files
 
-- `index.html` - Main registration page with Razorpay payment integration
-- `confirmation.html` - Registration confirmation page
-- `thankyou.html` - Thank you page after successful registration
-- `admin.html` - Admin dashboard to view registrations
-- `logo.jpg` - Event logo
+- `index.html` - Main registration page with UPI payment QR code and screenshot upload
+- `confirmation.html` - Registration confirmation page showing pending verification status
+- `thankyou.html` - Thank you page after successful registration submission
+- `admin.html` - Admin dashboard to view registrations and verify payment screenshots
+- `logo.jpg` - Event logo (also used as QR code placeholder)
 - `favicon.svg` / `favicon.ico` - Website favicon
 
 ## Usage
@@ -35,13 +38,26 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
    - WhatsApp Number (mandatory, 10 digits starting with 6-9)
    - Email (mandatory, valid format)
    - Event/Workshop selection (mandatory)
-3. Click "Pay ₹60 via Razorpay" to initiate payment
-   - Form fields are validated before payment
-   - Error messages appear below invalid fields
-   - Fix any errors shown before proceeding
-4. Complete payment using Razorpay's secure payment gateway
-5. After successful payment, submit the registration form
-6. View your confirmation on the thank you page
+3. Scan the QR code or click "Pay Now via UPI" to make payment of ₹60
+   - UPI payment link opens your preferred payment app
+   - Complete the payment in your UPI app
+4. Upload a screenshot of the completed payment transaction
+   - Screenshot must be clear and show transaction details
+   - File size limit: 500KB (images will be automatically validated)
+5. Submit the registration form for verification
+6. Wait for admin verification (within 24 hours)
+7. Receive confirmation message on WhatsApp after admin verifies your payment
+8. View your confirmation details on the thank you page
+
+## Admin Dashboard
+
+The admin dashboard (`admin.html`) allows administrators to:
+- View all registration submissions
+- View payment screenshots submitted by users
+- Verify or reject payment submissions
+- Track verification statistics (Total, Pending, Verified)
+- Export registration data to CSV
+- Filter registrations by various criteria
 
 ## Keyboard Shortcuts
 
@@ -72,18 +88,23 @@ Modify event options in `index.html` (Event Selection dropdown)
 - CSS3 (Glassmorphism, Neumorphism, Gradients)
 - Vanilla JavaScript
 - Firebase Firestore (Backend Database)
-- Razorpay Payment Gateway (Test Mode)
+- UPI Payment Integration (Direct Payment Links)
 - Font Awesome Icons
 - Google Fonts (Poppins, Orbitron)
 
-## Security Notes
+## Payment Process
 
-**Important**: This implementation uses a test Razorpay API key and client-side payment validation for demonstration purposes. For production use:
+This implementation uses a manual verification workflow:
 
-1. **Server-Side Payment Verification**: Implement backend API endpoints to create Razorpay orders and verify payment signatures
-2. **API Key Protection**: Store Razorpay keys securely in environment variables on the server
-3. **Payment Validation**: Verify all payments server-side using Razorpay's signature verification before accepting registrations
-4. **HTTPS Required**: Always use HTTPS in production to protect sensitive data
+1. **User Payment**: Users scan QR code or use direct UPI link to pay ₹60
+2. **Screenshot Upload**: Users upload screenshot of completed payment (max 500KB)
+3. **Admin Verification**: Admin manually verifies each payment screenshot
+4. **WhatsApp Confirmation**: Users receive confirmation on WhatsApp after verification
+
+**Important Setup Notes**:
+- ⚠️ **Replace QR Code**: The current QR code is a placeholder (logo.jpg). Replace it with an actual UPI payment QR code image before production use.
+- ⚠️ **Update UPI ID**: Change the UPI ID from `maptech2k26@upi` to your actual UPI ID in index.html.
+- ⚠️ **File Size Limit**: Screenshot uploads are limited to 500KB to stay within Firestore document size limits.
 
 ## Browser Support
 

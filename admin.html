@@ -497,10 +497,14 @@ function displayRegistrations() {
           </div>
           
           <div class="card-field">
-            <i class="fas fa-credit-card"></i>
+            <i class="fas fa-image"></i>
             <div>
-              <div class="field-label">Payment ID</div>
-              <div class="field-value">${reg.paymentId || 'N/A'}</div>
+              <div class="field-label">Payment Proof</div>
+              <div class="field-value">
+                ${reg.paymentProofUrl ? 
+                  `<a href="${reg.paymentProofUrl}" target="_blank" style="color: var(--secondary-color); text-decoration: underline;">View Screenshot</a>` : 
+                  'N/A'}
+              </div>
             </div>
           </div>
           
@@ -508,14 +512,21 @@ function displayRegistrations() {
             <i class="fas fa-check-circle"></i>
             <div>
               <div class="field-label">Payment Status</div>
-              <div class="field-value">${reg.paymentStatus || 'N/A'}</div>
+              <div class="field-value" style="color: ${reg.paymentStatus === 'verified' ? '#4CAF50' : '#ff9800'}; font-weight: 600;">
+                ${reg.paymentStatus === 'pending_verification' ? 'Pending Verification' : 
+                  reg.paymentStatus === 'verified' ? 'Verified' : 
+                  reg.paymentStatus || 'N/A'}
+              </div>
             </div>
           </div>
         </div>
         
         <div class="card-footer">
-          <div style="color: #4CAF50; font-weight: 600; text-align: center; padding: 10px;">
-            <i class="fas fa-rupee-sign"></i> ₹${reg.paymentAmount || '60'} - ${reg.paymentStatus || 'Completed'}
+          <div style="color: ${reg.paymentStatus === 'verified' ? '#4CAF50' : '#ff9800'}; font-weight: 600; text-align: center; padding: 10px;">
+            <i class="fas fa-rupee-sign"></i> ₹${reg.paymentAmount || '60'} - 
+            ${reg.paymentStatus === 'pending_verification' ? 'Pending Verification' : 
+              reg.paymentStatus === 'verified' ? 'Verified' : 
+              reg.paymentStatus || 'Pending'}
           </div>
         </div>
       </div>
@@ -556,7 +567,7 @@ window.exportData = function() {
     return;
   }
   
-  const headers = ['Name', 'Institute', 'Department', 'Event', 'Phone', 'Email', 'Payment ID', 'Payment Status', 'Registration Date'];
+  const headers = ['Name', 'Institute', 'Department', 'Event', 'Phone', 'Email', 'Payment Proof URL', 'Payment Status', 'Registration Date'];
   const rows = filteredRegistrations.map(reg => [
     reg.name || '',
     reg.institute || '',
@@ -564,7 +575,7 @@ window.exportData = function() {
     reg.event || '',
     reg.phone || '',
     reg.email || '',
-    reg.paymentId || '',
+    reg.paymentProofUrl || '',
     reg.paymentStatus || '',
     reg.timestamp ? new Date(reg.timestamp).toLocaleString() : ''
   ]);

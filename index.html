@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
 <style>
 /* Root variables */
@@ -492,12 +492,29 @@ body{background:#fff;color:#333;line-height:1.6;}
 
     <h3 style="color:#0D47A1;">Payment ₹60</h3>
     
-    <button type="button" class="pay-btn" id="payBtn" onclick="initiatePayment()">
-      <i class="fas fa-credit-card"></i> Pay ₹60 via Razorpay
-    </button>
+    <p style="text-align:center; margin: 15px 0; color:#666; font-size:14px;">
+      Scan the QR code below or click the button to pay via UPI
+    </p>
     
-    <div id="paymentStatus" style="display: none; margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600;">
-    </div>
+    <img src="scanner.jpg" alt="Payment QR Code" class="qr">
+    
+    <a href="upi://pay?pa=9765993135@ptaxis&pn=MAPTECH2K26&am=60&cu=INR&tn=MAPTECH%202K26" class="pay-btn" style="display:block; text-decoration:none; text-align:center;">
+      <i class="fas fa-mobile-alt"></i> Pay ₹60 via UPI
+    </a>
+
+    <h3 style="color:#0D47A1; margin-top:25px;">Upload Payment Proof</h3>
+    <p style="margin: 10px 0; color:#666; font-size:13px;">
+      After completing payment, please upload a screenshot of your payment confirmation
+    </p>
+
+    <label class="file-btn" for="screenshot" onclick="event.preventDefault(); openCloudinaryWidget()">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <span id="fileText">Click to Upload Payment Proof</span>
+      <input type="file" id="screenshot" style="display:none;">
+    </label>
+    <div class="field-error" id="screenshot-error"></div>
+    <div class="file-preview" id="filePreview"></div>
+    <input type="hidden" id="cloudinaryUrl" required>
 
     <div class="progress-bar" id="progressBar">
       <div class="progress-bar-fill" id="progressFill"></div>
@@ -526,16 +543,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Store payment status
-let paymentCompleted = false;
-let paymentId = null;
+// Cloudinary configuration
+const CLOUDINARY_CLOUD_NAME = 'dgt4rfzqb';
+const CLOUDINARY_UPLOAD_PRESET = 'maptech_preset';
 
-// Razorpay configuration
-// NOTE: This is a TEST API key for development/demo purposes only.
-// In production, payment verification should be handled server-side with signature validation.
-// The API key should be stored securely in environment variables and payment orders should be
-// created via a backend API endpoint to prevent client-side manipulation.
-const RAZORPAY_KEY = 'rzp_test_S9Luyj7D1mAl2g';
+// Store upload status
+let uploadCompleted = false;
+let uploadedFileUrl = null;
 
 // Show alert function
 function showAlert(message, type = 'info') {
@@ -635,6 +649,12 @@ function validateAllFields() {
   if (!name) {
     showFieldError('name', 'Full Name is required');
     isValid = false;
+  } else if (name.length < 8) {
+    showFieldError('name', 'Full Name must be at least 8 characters long');
+    isValid = false;
+  } else if (!/\s/.test(name)) {
+    showFieldError('name', 'Full Name must contain both first and last names');
+    isValid = false;
   }
 
   // Validate Phone
@@ -667,109 +687,62 @@ function validateAllFields() {
   return isValid;
 }
 
-// Initiate Razorpay payment
-window.initiatePayment = function() {
-  // Validate all fields before payment
-  const isValid = validateAllFields();
-  
-  if (!isValid) {
-    showAlert("Please fix all errors before proceeding to payment.", "error");
-    return;
-  }
-
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-
-  const options = {
-    key: RAZORPAY_KEY,
-    amount: 6000, // Amount in paise (₹60)
-    currency: 'INR',
-    name: 'MAP-TECH 2K26',
-    description: 'Event Registration Fee',
-    image: 'logo.jpg',
-    prefill: {
-      name: name,
-      email: email,
-      contact: phone
-    },
-    theme: {
-      color: '#0D47A1'
-    },
-    handler: function(response) {
-      // Payment successful
-      paymentId = response.razorpay_payment_id;
-      paymentCompleted = true;
-      
-      const statusDiv = document.getElementById('paymentStatus');
-      statusDiv.style.display = 'block';
-      statusDiv.style.background = '#d4edda';
-      statusDiv.style.color = '#155724';
-      statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Payment Successful! Payment ID: ' + paymentId;
-      
-      const payBtn = document.getElementById('payBtn');
-      payBtn.disabled = true;
-      payBtn.style.opacity = '0.6';
-      payBtn.innerHTML = '<i class="fas fa-check-circle"></i> Payment Completed';
-      
-      showAlert("Payment completed successfully! You can now submit your registration.", "success");
-    },
-    modal: {
-      ondismiss: function() {
-        if (!paymentCompleted) {
-          showAlert("Payment was cancelled. Please complete the payment to register.", "warning");
-        }
+// Open Cloudinary Upload Widget
+window.openCloudinaryWidget = function() {
+  const widget = cloudinary.createUploadWidget({
+    cloudName: CLOUDINARY_CLOUD_NAME,
+    uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+    folder: 'maptech_payments',
+    sources: ['local', 'camera'],
+    multiple: false,
+    cropping: false,
+    resourceType: 'image',
+    clientAllowedFormats: ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'],
+    maxFileSize: null, // No file size restriction
+    showUploadMoreButton: false,
+    styles: {
+      palette: {
+        window: '#FFFFFF',
+        windowBorder: '#0D47A1',
+        tabIcon: '#0D47A1',
+        menuIcons: '#1976D2',
+        textDark: '#000000',
+        textLight: '#FFFFFF',
+        link: '#0D47A1',
+        action: '#1976D2',
+        inactiveTabIcon: '#B0BEC5',
+        error: '#f44336',
+        inProgress: '#1976D2',
+        complete: '#4CAF50',
+        sourceBg: '#F5F5F5'
       }
     }
-  };
-
-  try {
-    // Check if Razorpay SDK is loaded
-    if (typeof Razorpay === 'undefined') {
-      showAlert("Payment system is not available. Please refresh the page and try again.", "error");
+  }, (error, result) => {
+    if (error) {
+      console.error('Upload error:', error);
+      showAlert('Error uploading file. Please try again.', 'error');
       return;
     }
     
-    const rzp = new Razorpay(options);
-    rzp.on('payment.failed', function(response) {
-      showAlert("Payment failed: " + (response.error.description || "Unknown error"), "error");
-    });
-    rzp.open();
-  } catch (error) {
-    console.error('Razorpay error:', error);
-    showAlert("Error initializing payment gateway. Please refresh the page and try again.", "error");
-  }
-};
-
-// File preview function
-window.previewFile = function() {
-  const fileInput = document.getElementById('screenshot');
-  const fileText = document.getElementById('fileText');
-  const filePreview = document.getElementById('filePreview');
+    if (result.event === 'success') {
+      uploadedFileUrl = result.info.secure_url;
+      uploadCompleted = true;
+      
+      // Update UI
+      const fileText = document.getElementById('fileText');
+      const filePreview = document.getElementById('filePreview');
+      const cloudinaryUrl = document.getElementById('cloudinaryUrl');
+      
+      fileText.textContent = 'Payment Proof Uploaded Successfully!';
+      filePreview.innerHTML = `<img src="${uploadedFileUrl}" alt="Payment Proof" style="max-width: 200px; border-radius: 8px; margin-top: 10px;">`;
+      cloudinaryUrl.value = uploadedFileUrl;
+      
+      clearFieldError('screenshot');
+      showAlert('Payment proof uploaded successfully!', 'success');
+    }
+  });
   
-  if (fileInput.files && fileInput.files[0]) {
-    const file = fileInput.files[0];
-    
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-    if (file.size > maxSize) {
-      showAlert('File size too large. Please select a file smaller than 5MB.', 'error');
-      fileInput.value = '';
-      return;
-    }
-    
-    fileText.textContent = file.name;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      filePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-    };
-    reader.onerror = function() {
-      showAlert('Error reading file. Please try again.', 'error');
-      filePreview.innerHTML = '';
-    };
-    reader.readAsDataURL(file);
-  }
+  widget.open();
 };
 
 // Add ripple effect to buttons
@@ -804,12 +777,10 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     return;
   }
 
-  // Check if payment is completed
-  // NOTE: In production, payment verification should be done server-side by verifying
-  // the payment signature with Razorpay's API to prevent client-side manipulation.
-  // This client-side check is only for user experience in the test environment.
-  if (!paymentCompleted || !paymentId) {
-    showAlert("Please complete the payment before submitting registration.", "error");
+  // Check if payment proof is uploaded
+  if (!uploadCompleted || !uploadedFileUrl) {
+    showFieldError('screenshot', 'Please upload payment proof before submitting');
+    showAlert("Please upload payment proof before submitting registration.", "error");
     return;
   }
   
@@ -827,16 +798,23 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     const progressBar = document.getElementById('progressBar');
     const progressFill = document.getElementById('progressFill');
     progressBar.classList.add('active');
-    progressFill.style.width = '50%';
+    progressFill.style.width = '30%';
 
+    // Save to Firebase
     await addDoc(collection(db,"registrations"),{
       institute, dept, name, phone, email, event,
-      paymentId: paymentId,
+      paymentProofUrl: uploadedFileUrl,
       paymentAmount: 60,
-      paymentStatus: 'completed',
+      paymentStatus: 'pending_verification',
       timestamp: new Date().toISOString()
     });
 
+    progressFill.style.width = '70%';
+    
+    // WhatsApp notification placeholder
+    // In production, this should call a backend API that sends WhatsApp messages
+    console.log(`WhatsApp notification would be sent to ${phone}: "Your registration is processing."`);
+    
     progressFill.style.width = '100%';
     
     // Store data in sessionStorage for confirmation page
@@ -844,10 +822,12 @@ document.getElementById("regForm").addEventListener("submit", async e => {
       institute, dept, name, phone, email, event
     }));
     
+    showAlert("Your registration is processing. You will receive a WhatsApp confirmation shortly.", "success");
+    
     setTimeout(() => {
       toggleLoader(false);
       window.location.href = 'thankyou.html';
-    }, 500);
+    }, 1000);
     
   } catch (error) {
     console.error('Error:', error);

@@ -8,7 +8,8 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
 - **Responsive Layout**: Optimized for both desktop and mobile devices
 - **Interactive Form**: Real-time validation with smooth animations and inline error messages
 - **UPI Payment Integration**: Direct UPI payment link with QR code for easy payments
-- **Payment Proof Submission**: Upload payment screenshot via Cloudinary integration
+- **Native File Upload**: Uses device's native file picker for payment proof upload - no external redirects
+- **Upload on Submission**: Files are uploaded to Cloudinary during form submission for better UX
 - **Inline Field Validation**: Error messages appear directly below each field for better UX
 - **Visual Feedback**: Color-coded fields (red for errors, green for valid inputs)
 - **Robust Validation**: All fields are mandatory with comprehensive validation
@@ -45,11 +46,13 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
    - Or click "Pay ₹60 via UPI" button to open UPI payment link
    - Complete the payment of ₹60
 4. Upload Payment Proof:
-   - Click "Click to Upload Payment Proof" button
+   - Click "Click to Upload Payment Proof" button (opens native file picker - no external redirect)
    - Select or take a photo of your payment confirmation screenshot from your UPI app
    - Ensure the screenshot shows transaction details including transaction ID, amount, and date
-   - Wait for upload to complete (no file size restrictions)
+   - File preview will be displayed (no file size restrictions)
 5. Submit the registration form
+   - The payment proof will be uploaded to Cloudinary during submission
+   - Progress bar shows upload and submission status
 6. You will receive a WhatsApp notification: "Your registration is processing."
 7. View your confirmation on the thank you page
 8. Admin can verify submissions using the uploaded screenshots in the admin dashboard
@@ -83,7 +86,8 @@ Modify event options in `index.html` (Event Selection dropdown)
 - CSS3 (Glassmorphism, Neumorphism, Gradients)
 - Vanilla JavaScript
 - Firebase Firestore (Backend Database)
-- Cloudinary (File Upload & Management)
+- Cloudinary (File Upload & Management via REST API)
+- Native File API (FileReader for preview)
 - UPI Payment Integration
 - Font Awesome Icons
 - Google Fonts (Poppins, Orbitron)

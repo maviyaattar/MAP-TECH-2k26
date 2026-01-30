@@ -496,7 +496,7 @@ body{background:#fff;color:#333;line-height:1.6;}
       Scan the QR code below or click the button to pay via UPI
     </p>
     
-    <img src="scanner.jpg" alt="Payment QR Code" class="qr">
+    <img src="scanner.jpg" alt="Payment QR Code" class="qr" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<p style=&quot;text-align:center; color:#f44336; margin:10px 0;&quot;>QR Code image not available. Please use the UPI link below.</p>')">
     
     <a href="upi://pay?pa=9765993135@ptaxis&pn=MAPTECH2K26&am=60&cu=INR&tn=MAPTECH%202K26" class="pay-btn" style="display:block; text-decoration:none; text-align:center;">
       <i class="fas fa-mobile-alt"></i> Pay ₹60 via UPI
@@ -507,10 +507,9 @@ body{background:#fff;color:#333;line-height:1.6;}
       After completing payment, please upload a screenshot of your payment confirmation
     </p>
 
-    <label class="file-btn" for="screenshot" onclick="event.preventDefault(); openCloudinaryWidget()">
+    <label class="file-btn" onclick="openCloudinaryWidget()">
       <i class="fas fa-cloud-upload-alt"></i>
       <span id="fileText">Click to Upload Payment Proof</span>
-      <input type="file" id="screenshot" style="display:none;">
     </label>
     <div class="field-error" id="screenshot-error"></div>
     <div class="file-preview" id="filePreview"></div>
@@ -655,6 +654,13 @@ function validateAllFields() {
   } else if (!/\s/.test(name)) {
     showFieldError('name', 'Full Name must contain both first and last names');
     isValid = false;
+  } else {
+    // Check that both first and last names have at least 2 characters
+    const nameParts = name.trim().split(/\s+/);
+    if (nameParts.length < 2 || nameParts.some(part => part.length < 2)) {
+      showFieldError('name', 'Both first and last names must be at least 2 characters long');
+      isValid = false;
+    }
   }
 
   // Validate Phone
@@ -689,6 +695,12 @@ function validateAllFields() {
 
 // Open Cloudinary Upload Widget
 window.openCloudinaryWidget = function() {
+  // Check if Cloudinary SDK is loaded
+  if (typeof cloudinary === 'undefined') {
+    showAlert('Upload system is not available. Please refresh the page and try again.', 'error');
+    return;
+  }
+  
   const widget = cloudinary.createUploadWidget({
     cloudName: CLOUDINARY_CLOUD_NAME,
     uploadPreset: CLOUDINARY_UPLOAD_PRESET,
@@ -720,7 +732,8 @@ window.openCloudinaryWidget = function() {
   }, (error, result) => {
     if (error) {
       console.error('Upload error:', error);
-      showAlert('Error uploading file. Please try again.', 'error');
+      const errorMsg = error.message || 'Unknown error occurred';
+      showAlert(`Error uploading file: ${errorMsg}. Please try again.`, 'error');
       return;
     }
     
@@ -812,8 +825,8 @@ document.getElementById("regForm").addEventListener("submit", async e => {
     progressFill.style.width = '70%';
     
     // WhatsApp notification placeholder
-    // In production, this should call a backend API that sends WhatsApp messages
-    console.log(`WhatsApp notification would be sent to ${phone}: "Your registration is processing."`);
+    // TODO: In production, implement a backend API that sends WhatsApp messages
+    // Expected message: "Your registration is processing."
     
     progressFill.style.width = '100%';
     
@@ -822,7 +835,7 @@ document.getElementById("regForm").addEventListener("submit", async e => {
       institute, dept, name, phone, email, event
     }));
     
-    showAlert("Your registration is processing. You will receive a WhatsApp confirmation shortly.", "success");
+    showAlert("Your registration is processing. Your payment proof will be verified by admin. You will receive a WhatsApp confirmation shortly.", "success");
     
     setTimeout(() => {
       toggleLoader(false);

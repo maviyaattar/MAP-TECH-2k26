@@ -46,7 +46,8 @@ A modern, responsive one-page registration website for the MAPTECH-2K26 college 
    - Complete the payment of ₹60
 4. Upload Payment Proof:
    - Click "Click to Upload Payment Proof" button
-   - Select or take a photo of your payment confirmation screenshot
+   - Select or take a photo of your payment confirmation screenshot from your UPI app
+   - Ensure the screenshot shows transaction details including transaction ID, amount, and date
    - Wait for upload to complete (no file size restrictions)
 5. Submit the registration form
 6. You will receive a WhatsApp notification: "Your registration is processing."
@@ -97,6 +98,12 @@ The application uses Cloudinary for managing payment proof uploads:
 - Folder: `maptech_payments`
 - No file size restrictions
 
+**Security Note**: The Cloudinary upload preset should be configured in the Cloudinary dashboard with:
+- Unsigned upload enabled
+- Appropriate upload limits to prevent abuse
+- Restricted file formats (images only)
+- Folder restriction to `maptech_payments`
+
 ### UPI Payment
 
 Payment is made via UPI link:
@@ -110,11 +117,13 @@ Users can scan the QR code (`scanner.jpg`) or click the payment button to initia
 
 **Important Security Considerations**:
 
-1. **Payment Verification**: Admin must manually verify payment proofs uploaded by users
-2. **File Upload Security**: Cloudinary handles file validation and security
-3. **Database Security**: Firebase Firestore rules should be configured to restrict write access
-4. **HTTPS Required**: Always use HTTPS in production to protect sensitive data
-5. **WhatsApp Integration**: Currently a placeholder - implement proper backend API for production
+1. **Payment Verification**: Admin must manually verify payment proofs uploaded by users before approving registrations
+2. **File Upload Security**: Cloudinary handles file validation and security. Configure the upload preset with appropriate restrictions in the Cloudinary dashboard
+3. **UPI Payment Validation**: The UPI payment address (9765993135@ptaxis) is hardcoded. Ensure payment screenshots are verified to match expected transaction details
+4. **Database Security**: Firebase Firestore rules should be configured to restrict write access
+5. **HTTPS Required**: Always use HTTPS in production to protect sensitive data
+6. **WhatsApp Integration**: Currently a placeholder - implement proper backend API with authentication for production
+7. **Admin Dashboard**: Consider adding authentication and payment status update functionality for the admin panel
 
 ## Browser Support
 
